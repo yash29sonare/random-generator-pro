@@ -1,20 +1,20 @@
-const CACHE_NAME = 'rg-pro-v1';
+const CACHE_NAME = 'rg-pro-v2';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
 ];
 
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './favicon.svg',
-  './icon-192x192.png',
-  './icon-512x512.png',
-  './404.html',
-  './privacy.html',
-  './tools/number-generator.html',
-  './tools/name-picker.html',
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/favicon.svg',
+  '/icon-192x192.png',
+  '/icon-512x512.png',
+  '/404.html',
+  '/privacy.html',
+  '/tools/number-generator.html',
+  '/tools/name-picker.html',
   ...GOOGLE_FONTS
 ];
 
