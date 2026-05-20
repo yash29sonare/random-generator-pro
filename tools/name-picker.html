@@ -165,6 +165,8 @@
                     Random Generator Pro
                 </h1>
             </a>
+            <!-- AdSense CLS Reserve Slot -->
+            <div id="ad-slot-reserve" style="min-height: 100px; width: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); margin-bottom: 25px; border-radius: 12px; border: 1px dashed #444; font-size: 12px; color: #666; position: relative; z-index: 1;">Advertisement Placeholder</div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-bento-gap w-full mb-16">
                 <!-- Card 1: Number Generator -->
                 <section class="bento-card p-6 md:p-8 flex flex-col justify-between min-h-[400px]" id="numbers">
@@ -503,6 +505,33 @@
                     </p>
                 </section>
             </article>
+
+            <!-- Expert Content: Anti-Thin-Content SEO Section -->
+            <section id="pro-app-info" style="display: block; padding: 3rem 1.5rem; max-width: 1000px; margin: 0 auto; line-height: 1.8; color: #e0e0e0; border-top: 1px solid #333;">
+                <h2 class="text-headline-md font-headline-md text-white mb-4">Enterprise-Grade Randomization</h2>
+                <p class="text-body-md mb-4 leading-relaxed">
+                    Random Generator Pro is engineered around the Web Crypto API's <code>crypto.getRandomValues()</code> interface—the same cryptographic entropy source trusted by major financial institutions, government security agencies, and enterprise-grade password managers worldwide. Unlike legacy utilities that depend on the mathematically predictable <code>Math.random()</code> pseudo-random number generator, our platform draws entropy directly from the operating system's hardware-level randomness pool. This pool aggregates environmental noise from CPU timing jitter, interrupt request sequences, and peripheral device input fluctuations, producing output that is computationally indistinguishable from true randomness and completely immune to statistical prediction or reverse-engineering.
+                </p>
+                <p class="text-body-md mb-4 leading-relaxed">
+                    The critical advantage of browser-side generation is absolute data sovereignty. Because all cryptographic operations execute within the browser's isolated JavaScript sandbox, generated values—whether they are 20-digit integers, 32-character passwords, or complete identity profiles—never traverse network boundaries. There is no HTTP request, no server-side logging, no transient memory storage on remote infrastructure, and no cloud database persistence. This zero-transmission architecture eliminates the entire class of man-in-the-middle interception risks and provides mathematically provable privacy guarantees that server-side random generation services fundamentally cannot offer.
+                </p>
+
+                <h2 class="text-headline-md font-headline-md text-white mb-4 mt-12">Advanced Password Architecting</h2>
+                <p class="text-body-md mb-4 leading-relaxed">
+                    The security of a generated password is quantified by its Shannon Entropy—a mathematical measure of informational uncertainty expressed in bits. A password composed exclusively of 26 lowercase alphabetic characters yields approximately 4.7 bits of entropy per character; adding uppercase letters, numerals, and a full symbol set expands the per-character entropy to approximately 6.5 bits. At a standard length of 16 characters with the complete character set enabled, Random Generator Pro produces passwords with over 104 bits of entropy—a threshold that renders brute-force attacks computationally infeasible even against adversaries deploying modern GPU clusters capable of billions of hash attempts per second.
+                </p>
+                <p class="text-body-md mb-4 leading-relaxed">
+                    For context, at 10 billion guesses per second, cracking a 104-bit-entropy password would require approximately 6.4 × 10<sup>14</sup> years—orders of magnitude beyond the projected age of the universe. Character diversity is not merely a best practice; it is a mathematical necessity for 2026 security standards. Our Password Architect module enforces this by providing granular toggle controls for uppercase letters, digits, and symbols, ensuring that every generated credential meets or exceeds NIST SP 800-63B guidelines for memorized secrets. The cryptographic selection algorithm guarantees uniform distribution across the chosen character pool, eliminating the clustering biases that compromise many consumer-grade password generators.
+                </p>
+
+                <h2 class="text-headline-md font-headline-md text-white mb-4 mt-12">Next-Gen PWA Reliability</h2>
+                <p class="text-body-md mb-4 leading-relaxed">
+                    Random Generator Pro operates as a fully installable Progressive Web Application with comprehensive offline capability. The Service Worker implements a Cache-First strategy for all critical assets—HTML pages, JavaScript modules, CSS stylesheets, and regional name datasets—ensuring that the application remains fully functional even when the user has no network connectivity. Regional name data for the United States, United Kingdom, India/South Asia, and Japan is pre-cached during the initial Service Worker installation phase and stored locally using the Cache Storage API.
+                </p>
+                <p class="text-body-md leading-relaxed">
+                    When the Name Picker or Identity Engine is invoked offline, the Service Worker intercepts the fetch request, matches it against the local cache, and serves the dataset directly from the device storage with zero network latency. A secondary fallback layer uses <code>localStorage</code> to maintain a versioned copy of the name data, guaranteeing data availability even if the Cache Storage is purged by browser garbage collection. This JSON sandboxing architecture ensures that the identity generation pipeline never fails, never exposes user activity to network observers, and delivers instantaneous response times regardless of connection state—a critical reliability characteristic for professionals operating in bandwidth-constrained environments or privacy-sensitive jurisdictions.
+                </p>
+            </section>
 
             <!-- Footer Cross-Links -->
             <footer class="mt-8 pt-8 border-t border-outline-variant flex flex-col justify-center items-center pb-8 text-on-surface-variant font-label-caps text-sm uppercase tracking-widest">
