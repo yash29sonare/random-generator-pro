@@ -130,7 +130,7 @@
     <!-- TopAppBar (Mobile Only) -->
     <header
         class="xl:hidden flex justify-between items-center w-full px-margin-mobile py-4 bg-black border-b border-white sticky top-0 z-50">
-        <a href="/">
+        <a href="/" aria-label="Go to Home">
             <div class="text-headline-md font-headline-md font-bold text-white tracking-tighter hover:opacity-80 transition-opacity">Random Generator Pro</div>
         </a>
         <div class="flex gap-2">
@@ -155,7 +155,7 @@
         <!-- Center Column -->
         <main class="center-main flex flex-col w-full shrink-0">
             <!-- Logo Desktop -->
-            <a href="/">
+            <a href="/" aria-label="Go to Home">
                 <h1 class="hidden xl:block text-headline-lg font-headline-lg text-white text-center font-bold tracking-widest uppercase mb-8 hover:opacity-80 transition-opacity">
                     Random Generator Pro
                 </h1>
@@ -501,7 +501,7 @@
 
             <!-- Footer Cross-Links -->
             <footer class="mt-8 pt-8 border-t border-outline-variant flex flex-col justify-center items-center pb-8 text-on-surface-variant font-label-caps text-sm uppercase tracking-widest">
-                <span><a href='/index.html' class="hover:text-white transition-colors mx-2">Home</a> | <a href='/tools/name-picker.html' class="hover:text-white transition-colors mx-2">Indian Name Generator</a> | <a href='/tools/number-generator.html' class="hover:text-white transition-colors mx-2">Number Tool</a> | <a href='/privacy.html' class="hover:text-white transition-colors mx-2">Privacy</a></span>
+                <span><a href='/index.html' aria-label="Home" class="hover:text-white transition-colors mx-2">Home</a> | <a href='/tools/name-picker.html' aria-label="Indian Name Generator" class="hover:text-white transition-colors mx-2">Indian Name Generator</a> | <a href='/tools/number-generator.html' aria-label="Number Tool" class="hover:text-white transition-colors mx-2">Number Tool</a> | <a href='/privacy.html' aria-label="Privacy Policy" class="hover:text-white transition-colors mx-2">Privacy</a></span>
             </footer>
         </main>
         <!-- Right Sidebar -->
@@ -516,19 +516,19 @@
     <!-- BottomNavBar (Mobile Only) -->
     <nav
         class="xl:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-black border-t border-white shadow-2xl">
-        <a class="flex flex-col items-center justify-center text-white font-bold w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#numbers">
+        <a aria-label="Navigate to Numbers" class="flex flex-col items-center justify-center text-white font-bold w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#numbers">
             <span class="material-symbols-outlined text-[20px]">pin</span>
             <span class="text-[10px] font-label-caps tracking-wider">Numbers</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#passwords">
+        <a aria-label="Navigate to Passwords" class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#passwords">
             <span class="material-symbols-outlined text-[20px]">password</span>
             <span class="text-[10px] font-label-caps tracking-wider">Passwords</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#names">
+        <a aria-label="Navigate to Names" class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#names">
             <span class="material-symbols-outlined text-[20px]">badge</span>
             <span class="text-[10px] font-label-caps tracking-wider">Names</span>
         </a>
-        <a class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#identities">
+        <a aria-label="Navigate to Random Names" class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors" href="#identities">
             <span class="material-symbols-outlined text-[20px]">fingerprint</span>
             <span class="text-[10px] font-label-caps tracking-wider">Random Names</span>
         </a>

@@ -95,7 +95,7 @@ btnNumGen?.addEventListener('click', () => {
             return;
         }
         outNum.textContent = cryptoRandomBigInt(min, max).toString();
-        outNum.scrollLeft = 0;
+        requestAnimationFrame(() => { outNum.scrollLeft = 0; });
     }
 });
 
@@ -128,7 +128,7 @@ btnPassGen?.addEventListener('click', () => {
         password += charset.charAt(array[i] % charset.length);
     }
     outPass.value = password;
-    outPass.scrollLeft = 0;
+    requestAnimationFrame(() => { outPass.scrollLeft = 0; });
 });
 
 btnPassCopy?.addEventListener('click', () => {
@@ -163,7 +163,7 @@ btnNamePick?.addEventListener('click', () => {
         if (count > 10) {
             clearInterval(interval);
             outName.textContent = names[cryptoRandomInt(0, names.length - 1)];
-            outName.scrollLeft = 0;
+            requestAnimationFrame(() => { outName.scrollLeft = 0; });
         }
     }, 50);
 });
