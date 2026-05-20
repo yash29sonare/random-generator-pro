@@ -1,0 +1,44 @@
+# 1. Dependencies & Locks:
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 2. Environment & Secrets:
+.env
+.env.local
+.env.*.local
+*.pem
+
+# 3. OS & System Junk:
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# 4. IDE & IDE Configs (The Folder Guard):
+.idx/
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# 5. Build & Deployment Artifacts:
+.vercel/
+dist/
+build/
+out/
+linkinator-report.json
+
+# 6. Temporary & Backup Files:
+*.bak
+*.tmp
+*~
+
+# Verification: Explicitly allow required production files
+!engine.min.js
+!style.min.css
+
+# Dev Scripts
+generate_*.js
+build_tools.js
