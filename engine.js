@@ -234,7 +234,6 @@ async function fetchNameData(region) {
 
         return data;
     } catch (e) {
-        console.error("Error fetching name data", e);
         showToast('Offline Mode: Using backup data.');
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
@@ -279,7 +278,6 @@ btnIdGen?.addEventListener('click', async () => {
         try {
             remoteData = await fetchNameData(region);
         } catch (error) {
-            console.error(error);
             showToast('Network error, falling back to cache');
             const cached = localStorage.getItem(cacheKey);
             if (cached) {
@@ -335,7 +333,7 @@ btnIdGen?.addEventListener('click', async () => {
                 <div class="text-on-surface-variant text-sm">${city} • Age: ${age}</div>
                 <div class="text-[12px] text-white font-mono uppercase mt-1">ID: ${idNumber}</div>
             </div>
-            <button class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn" title="Copy Profile">
+            <button class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn" title="Copy Profile" aria-label="Copy Profile">
                 <span class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-white">content_copy</span>
             </button>
         </div>

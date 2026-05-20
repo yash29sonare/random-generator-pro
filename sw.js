@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rg-pro-v6';
+const CACHE_NAME = 'rg-pro-v7';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
@@ -84,7 +84,6 @@ self.addEventListener('fetch', event => {
         }
         return networkResponse;
       } catch (error) {
-        console.error("Fetch failed; returning offline page instead.", error);
         return new Response('Network error happened', {
           status: 408,
           headers: { 'Content-Type': 'text/plain' },

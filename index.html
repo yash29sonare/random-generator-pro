@@ -14,10 +14,10 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo+Narrow:wght@400;600;700&amp;family=Geist:wght@400;700&amp;family=Hanken+Grotesk:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+        rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
+        rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
         tailwind.config = {
@@ -94,8 +94,9 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/style.css?v=1.1" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="/style.min.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="/style.min.css?v=2.0" /></noscript>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href="https://randomgeneratorpro.vercel.app/" />
     <script type="application/ld+json">
@@ -175,7 +176,7 @@
                                 id="out-num">58</div>
                             <button
                                 class="flex-none w-12 h-12 flex items-center justify-center bg-black border border-white text-on-surface hover:border-white hover:brightness-125 transition-all"
-                                id="btn-num-copy-new" title="Copy Number">
+                                id="btn-num-copy-new" title="Copy Number" aria-label="Copy Number">
                                 <span class="material-symbols-outlined">content_copy</span>
                             </button>
                         </div>
@@ -185,13 +186,14 @@
                             <label class="text-label-caps font-label-caps text-on-surface-variant">USE DIGIT COUNT
                                 (1-20)</label>
                             <div class="flex gap-2">
+                                <label for="num-digits" class="sr-only">Digit Count</label>
                                 <input
                                     class="w-full bg-black border border-white focus:border-white text-white p-3 font-body-md outline-none transition-colors"
                                     id="num-digits" max="20" min="1" placeholder="Leave empty for range..."
                                     type="number" />
                                 <button
                                     class="px-4 bg-black border border-white text-on-surface hover:bg-white hover:text-black transition-colors"
-                                    id="btn-digits-clear" title="Clear Digits">
+                                    id="btn-digits-clear" title="Clear Digits" aria-label="Clear Digits">
                                     <span class="material-symbols-outlined">backspace</span>
                                 </button>
                             </div>
@@ -200,12 +202,14 @@
                             style="opacity: 1; pointer-events: auto;">
                             <div class="space-y-2">
                                 <label class="text-label-caps font-label-caps text-on-surface-variant">MIN RANGE</label>
+                                <label for="num-min" class="sr-only">Min Range</label>
                                 <input
                                     class="w-full bg-black border border-white focus:border-white text-white p-3 font-body-md outline-none transition-colors"
                                     id="num-min" type="number" value="1" />
                             </div>
                             <div class="space-y-2">
                                 <label class="text-label-caps font-label-caps text-on-surface-variant">MAX RANGE</label>
+                                <label for="num-max" class="sr-only">Max Range</label>
                                 <input
                                     class="w-full bg-black border border-white focus:border-white text-white p-3 font-body-md outline-none transition-colors"
                                     id="num-max" type="number" value="100" />
@@ -232,7 +236,7 @@
                                 id="out-pass" placeholder="Click Generate" readonly="" type="text" />
                             <button
                                 class="absolute right-1 top-1 bottom-1 px-4 bg-white text-black hover:bg-on-surface-variant transition-colors flex items-center justify-center min-w-[44px]"
-                                id="btn-pass-copy">
+                                id="btn-pass-copy" aria-label="Copy Password">
                                 <span class="material-symbols-outlined">content_copy</span>
                             </button>
                         </div>
@@ -241,6 +245,7 @@
                                 <label class="text-label-caps font-label-caps text-on-surface-variant">LENGTH: <span
                                         class="text-white font-bold" id="pass-len-val">16</span></label>
                             </div>
+                            <label for="pass-length" class="sr-only">Password Length</label>
                             <input
                                 class="w-full h-1 bg-surface-container-highest appearance-none cursor-pointer accent-white"
                                 id="pass-length" max="32" min="8" type="range" value="16" />
@@ -286,6 +291,7 @@
                         <span class="material-symbols-outlined text-on-surface-variant">badge</span>
                     </div>
                     <div class="flex flex-col gap-6 flex-grow">
+                        <label for="name-input" class="sr-only">Names List</label>
                         <textarea
                             class="w-full h-32 bg-black border border-white focus:border-white text-white p-4 font-body-md outline-none resize-none"
                             id="name-input"
@@ -314,6 +320,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-2">
                                 <label class="text-label-caps font-label-caps text-on-surface-variant">REGION</label>
+                                <label for="region-select" class="sr-only">Region Selection</label>
                                 <select
                                     class="w-full bg-black border border-white focus:border-white text-white p-3 font-body-md outline-none"
                                     id="region-select">
@@ -325,6 +332,7 @@
                             </div>
                             <div class="space-y-2">
                                 <label class="text-label-caps font-label-caps text-on-surface-variant">GENDER</label>
+                                <label for="gender-select" class="sr-only">Gender Selection</label>
                                 <select
                                     class="w-full bg-black border border-white focus:border-white text-white p-3 font-body-md outline-none"
                                     id="gender-select">
@@ -345,7 +353,7 @@
                                 </div>
                                 <button
                                     class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn"
-                                    title="Copy Profile">
+                                    title="Copy Profile" aria-label="Copy Profile">
                                     <span
                                         class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-white">content_copy</span>
                                 </button>
@@ -359,7 +367,7 @@
                                 </div>
                                 <button
                                     class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn"
-                                    title="Copy Profile">
+                                    title="Copy Profile" aria-label="Copy Profile">
                                     <span
                                         class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-white">content_copy</span>
                                 </button>
@@ -373,7 +381,7 @@
                                 </div>
                                 <button
                                     class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn"
-                                    title="Copy Profile">
+                                    title="Copy Profile" aria-label="Copy Profile">
                                     <span
                                         class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-white">content_copy</span>
                                 </button>
@@ -387,7 +395,7 @@
                                 </div>
                                 <button
                                     class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn"
-                                    title="Copy Profile">
+                                    title="Copy Profile" aria-label="Copy Profile">
                                     <span
                                         class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-white">content_copy</span>
                                 </button>
@@ -528,15 +536,11 @@
     <div style="background: #111; border-top: 2px solid #fff; padding: 20px; text-align: center; width: 100%; position: relative; z-index: 9999;">
         <a href="/privacy.html" style="color:#fff; margin: 0 10px;">Privacy Policy</a> | <a href="/ads.txt" style="color:#fff; margin: 0 10px;">Ads.txt</a>
     </div>
-    <script src="/engine.min.js"></script>
+    <script src="/engine.min.js?v=2.0"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(registration => {
-                    console.log('SW registered: ', registration);
-                }).catch(registrationError => {
-                    console.log('SW registration failed: ', registrationError);
-                });
+                navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => {});
             });
         }
     </script>
