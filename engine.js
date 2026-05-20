@@ -94,8 +94,8 @@ btnNumGen?.addEventListener('click', () => {
             outNum.textContent = "MIN > MAX";
             return;
         }
-
         outNum.textContent = cryptoRandomBigInt(min, max).toString();
+        outNum.scrollLeft = 0;
     }
 });
 
@@ -128,11 +128,14 @@ btnPassGen?.addEventListener('click', () => {
         password += charset.charAt(array[i] % charset.length);
     }
     outPass.value = password;
+    outPass.scrollLeft = 0;
 });
 
 btnPassCopy?.addEventListener('click', () => {
-    if (outPass.value) {
-        navigator.clipboard.writeText(outPass.value);
+    const textToCopy = outPass.value;
+    if (!textToCopy) return;
+    if (textToCopy) {
+        navigator.clipboard.writeText(textToCopy);
         const originalIcon = btnPassCopy.innerHTML;
         btnPassCopy.innerHTML = '<span class="material-symbols-outlined text-black">check</span>';
         showToast("Password Copied!");
@@ -160,6 +163,7 @@ btnNamePick?.addEventListener('click', () => {
         if (count > 10) {
             clearInterval(interval);
             outName.textContent = names[cryptoRandomInt(0, names.length - 1)];
+            outName.scrollLeft = 0;
         }
     }, 50);
 });
@@ -358,6 +362,7 @@ outIdList?.addEventListener('click', (e) => {
     const id = profileDiv.querySelector('.text-\\[12px\\].text-white.font-mono').textContent;
 
     const textToCopy = `${name}\n${details}\n${id}`;
+    if (!textToCopy) return;
     navigator.clipboard.writeText(textToCopy).then(() => {
         const icon = btn.querySelector('.material-symbols-outlined');
         const originalText = icon.textContent;
@@ -380,9 +385,10 @@ btnPassGen.click();
 const btnNumCopy = document.getElementById('btn-num-copy');
 if (btnNumCopy) {
     btnNumCopy?.addEventListener('click', () => {
-        const text = document.getElementById('out-num').textContent;
-        if (text && text !== "ERR" && text !== "MIN > MAX" && text !== "RANGE 1-20") {
-            navigator.clipboard.writeText(text);
+        const textToCopy = document.getElementById('out-num').textContent;
+        if (!textToCopy) return;
+        if (textToCopy && textToCopy !== "ERR" && textToCopy !== "MIN > MAX" && textToCopy !== "RANGE 1-20") {
+            navigator.clipboard.writeText(textToCopy);
             const originalIcon = btnNumCopy.innerHTML;
             btnNumCopy.innerHTML = '<span class="material-symbols-outlined">check</span>';
             setTimeout(() => { btnNumCopy.innerHTML = originalIcon; }, 2000);
@@ -394,9 +400,10 @@ if (btnNumCopy) {
     const btn = document.getElementById('btn-num-copy-new');
     if (btn) {
         btn?.addEventListener('click', () => {
-            const text = document.getElementById('out-num').textContent;
-            if (text && !['ERR', 'MIN > MAX', 'RANGE 1-20'].includes(text)) {
-                navigator.clipboard.writeText(text).then(() => {
+            const textToCopy = document.getElementById('out-num').textContent;
+            if (!textToCopy) return;
+            if (textToCopy && !['ERR', 'MIN > MAX', 'RANGE 1-20'].includes(textToCopy)) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
                     const icon = btn.querySelector('.material-symbols-outlined');
                     const originalText = icon.textContent;
                     icon.textContent = 'check';
