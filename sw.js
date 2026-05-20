@@ -62,9 +62,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Bypass: Never intercept Google AdSense/Ads dynamic scripts
-  const url = event.request.url;
-  if (url.includes('googlesyndication') || url.includes('googleads') || url.includes('doubleclick') || url.includes('adservice.google')) return;
+  if (event.request.url.includes('googleads') || event.request.url.includes('adsense') || event.request.url.includes('doubleclick')) return;
 
   if (event.request.url.includes('names')) {
     event.respondWith(
