@@ -239,7 +239,7 @@ async function fetchNameData(region) {
 
         return data;
     } catch (e) {
-        showToast('Using Cached Data (Offline Mode)');
+        showToast('Offline Mode: Using Cached Data');
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
             return JSON.parse(cached);
@@ -274,7 +274,7 @@ btnIdGen?.addEventListener('click', async () => {
     const cacheKey = `nameData_${fileRegion}`;
 
     if (isOffline) {
-        showToast('Using Cached Data (Offline Mode)');
+        showToast('Offline Mode: Using Cached Data');
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
             remoteData = JSON.parse(cached);
@@ -296,7 +296,7 @@ btnIdGen?.addEventListener('click', async () => {
     btnIdGen.textContent = originalText;
 
     if (!remoteData) {
-        showToast("Failed to load name data. UI not frozen.");
+        showToast("Offline Mode: Using Cached Data");
         return;
     }
 

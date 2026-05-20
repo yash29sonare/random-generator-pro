@@ -1,10 +1,10 @@
-const CACHE_NAME = 'rg-pro-v10';
+const CACHE_NAME = 'rg-pro-v12';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
 ];
 
-const ASSETS_TO_CACHE = [
+const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
@@ -15,8 +15,13 @@ const ASSETS_TO_CACHE = [
   '/privacy.html',
   '/tools/number-generator.html',
   '/tools/name-picker.html',
+  '/data/names-US.json',
+  '/data/names-UK.json',
+  '/data/names-AS.json',
+  '/data/names-JP.json',
   ...GOOGLE_FONTS
 ];
+const ASSETS_TO_CACHE = PRECACHE_ASSETS;
 
 self.addEventListener('install', event => {
   self.skipWaiting();
@@ -59,15 +64,20 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.url.includes('names')) {
     event.respondWith(
-      caches.open('data-cache').then(cache => 
-        cache.match(event.request).then(response => {
-          const fetchPromise = fetch(event.request).then(networkResponse => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
-          return response || fetchPromise;
-        })
-      )
+      caches.match(event.request).then(cachedResponse => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(event.request).then(networkResponse => {
+          if (networkResponse.ok) {
+            const responseClone = networkResponse.clone();
+            caches.open('data-cache').then(cache => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return networkResponse;
+        });
+      })
     );
     return;
   }
