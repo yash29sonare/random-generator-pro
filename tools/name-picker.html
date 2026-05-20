@@ -94,9 +94,9 @@
             }
         }
     </script>
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-    <link rel="stylesheet" href="../style.min.css" />
-    <link rel="manifest" href="../manifest.json" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css?v=1.1" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="canonical" href="https://random-generator-pro.vercel.app/tools/name-picker.html" />
     <script type="application/ld+json">
     {
@@ -497,13 +497,6 @@
                     <a href="./number-generator.html" class="text-on-surface-variant hover:text-white transition-colors font-label-caps text-sm uppercase tracking-widest">Number Generator</a>
                     <a href="./name-picker.html" class="text-on-surface-variant hover:text-white transition-colors font-label-caps text-sm uppercase tracking-widest">Name Picker</a>
                 </div>
-                <div class="legal-links w-full max-w-md" style="margin-top:2rem; border-top:1px solid #333; padding-top:1rem; display:flex; justify-content:center; gap:15px; font-size: 0.875rem;">
-                    <a href="/privacy.html" style="color: #888; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#888'">Privacy Policy</a>
-                    <span style="color: #333;">|</span>
-                    <a href="/ads.txt" style="color: #888; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#888'">AdSense Ads.txt</a>
-                    <span style="color: #333;">|</span>
-                    <a href="mailto:contact@yourdomain.in" style="color: #888; transition: color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#888'">Contact Support</a>
-                </div>
             </footer>
         </main>
         <!-- Right Sidebar -->
@@ -535,6 +528,9 @@
             <span class="text-[10px] font-label-caps tracking-wider">Random Names</span>
         </a>
     </nav>
+    <div style="background: #111; border-top: 2px solid #fff; padding: 20px; text-align: center; width: 100%; position: relative; z-index: 9999;">
+        <a href="../privacy.html" style="color:#fff; margin: 0 10px;">Privacy Policy</a> | <a href="../ads.txt" style="color:#fff; margin: 0 10px;">Ads.txt</a>
+    </div>
     <script src="../engine.min.js"></script>
     <script>
         const isSubPage = window.location.pathname.includes('/tools/');

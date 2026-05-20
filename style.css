@@ -187,12 +187,15 @@ details>summary::-webkit-details-marker {
 
 /* Text and Readability */
 .massive-output, #out-name, #out-pass, #number-display, .out-text-container {
-    font-size: clamp(1.2rem, 8vw, 3.5rem);
+    font-size: clamp(1rem, 5vw, 1.8rem) !important;
+    letter-spacing: -1px;
+    word-break: keep-all;
     text-align: center;
-    white-space: nowrap;
-    overflow-x: auto;
+    white-space: nowrap !important;
+    overflow-x: auto !important;
     display: block;
-    max-width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
     font-family: 'Geist', 'Archivo Narrow', sans-serif;
 }
 
