@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rg-pro-v8';
+const CACHE_NAME = 'rg-pro-v9';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
@@ -39,16 +39,7 @@ self.addEventListener('install', event => {
         await cache.add('./engine.js');
       }
 
-      try {
-        const styleMinRes = await fetch('./style.min.css');
-        if (styleMinRes.ok) {
-          await cache.put('./style.min.css', styleMinRes);
-        } else {
-          await cache.add('./style.css');
-        }
-      } catch (e) {
-        await cache.add('./style.css');
-      }
+      // Critical CSS is now inlined, no need to cache style.min.css separately
     })()
   );
 });
