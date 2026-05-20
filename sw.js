@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rg-pro-v9';
+const CACHE_NAME = 'rg-pro-v10';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
@@ -57,7 +57,18 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.url.includes('data/names-')) {
+  if (event.request.url.includes('names')) {
+    event.respondWith(
+      caches.open('data-cache').then(cache => 
+        cache.match(event.request).then(response => {
+          const fetchPromise = fetch(event.request).then(networkResponse => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+          return response || fetchPromise;
+        })
+      )
+    );
     return;
   }
   

@@ -36,6 +36,11 @@ function cryptoRandomBigInt(min, max) {
     return min + randomValue;
 }
 
+// --- Security CSP: Activate Preloaded Styles ---
+document.querySelectorAll('link[rel="preload"][as="style"]').forEach(link => {
+    link.rel = 'stylesheet';
+});
+
 // --- Module 1: Number Generator ---
 const btnNumGen = document.getElementById('btn-num-gen');
 const outNum = document.getElementById('out-num');
@@ -234,7 +239,7 @@ async function fetchNameData(region) {
 
         return data;
     } catch (e) {
-        showToast('Offline Mode: Using backup data.');
+        showToast('Using Cached Data (Offline Mode)');
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
             return JSON.parse(cached);
@@ -269,7 +274,7 @@ btnIdGen?.addEventListener('click', async () => {
     const cacheKey = `nameData_${fileRegion}`;
 
     if (isOffline) {
-        showToast('Offline Mode: Using locally cached identities.');
+        showToast('Using Cached Data (Offline Mode)');
         const cached = localStorage.getItem(cacheKey);
         if (cached) {
             remoteData = JSON.parse(cached);
