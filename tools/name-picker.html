@@ -171,6 +171,8 @@
     <meta name="twitter:image" content="https://randomgeneratorpro.online/og-image.png" />
     <meta name="color-scheme" content="dark" />
 
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="manifest" href="../manifest.json" />
     <style>
         .bento-card:not(#names) {
             display: none !important;
@@ -182,8 +184,8 @@
     <!-- TopAppBar (Mobile Only) -->
     <header
         class="xl:hidden flex justify-between items-center w-full px-margin-mobile py-4 bg-black border-b border-white sticky top-0 z-50">
-        <a href="/" aria-label="Go to Home">
-            <div class="text-headline-md font-headline-md font-bold text-white tracking-tighter hover:opacity-80 transition-opacity">Random Generator Pro</div>
+        <a href="../index.html" aria-label="Go to Home">
+            <div class="text-headline-md font-headline-md font-bold text-white tracking-tighter hover:text-primary transition-colors">Random Generator Pro</div>
         </a>
         <div class="flex gap-2">
             <button class="w-11 h-11 flex items-center justify-center text-white hover:bg-zinc-900 transition-colors" aria-label="History" title="History">
@@ -208,8 +210,8 @@
         <main class="center-main flex flex-col w-full shrink-0">
             <div id='ad-slot-reserve' style='min-height: 100px; width: 100%; max-width: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); margin: 0 auto 25px auto; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); font-size: 11px; color: #777; overflow: hidden;'>Advertisement Placeholder</div>
             <!-- Logo Desktop -->
-            <a href="/" aria-label="Go to Home">
-                <h1 class="hidden xl:block text-headline-lg font-headline-lg text-white text-center font-bold tracking-widest uppercase mb-8 hover:opacity-80 transition-opacity">
+            <a href="../index.html" aria-label="Go to Home">
+                <h1 class="hidden xl:block text-headline-lg font-headline-lg text-white text-center font-bold tracking-widest uppercase mb-8 hover:text-primary transition-colors">
                     Random Generator Pro
                 </h1>
             </a>
@@ -593,14 +595,20 @@
     <footer
         class="mt-8 pt-8 border-t border-outline-variant flex flex-col justify-center items-center pb-8 text-on-surface-variant font-label-caps text-sm uppercase tracking-widest gap-4">
         <nav aria-label="Site Navigation">
-            <a href="/index.html" class="hover:text-white transition-colors mx-3"
-                title="Random Generator Pro Homepage">Secure Random Generator</a> |
-            <a href="/tools/number-generator.html" class="hover:text-white transition-colors mx-3"
-                title="Cryptographic Random Number Generator">Precision Number Engine</a> |
-            <a href="/tools/name-picker.html" class="hover:text-white transition-colors mx-3"
-                title="Cryptographic Name Picker Tool">Fair Name Picker</a> |
-            <a href="/index.html#passwords" class="hover:text-white transition-colors mx-3"
-                title="High-Entropy Password Generator">High-Entropy Password Architect</a>
+            <a href="../index.html#passwords" class="hover:text-primary transition-colors mx-3"
+                title="High-Entropy Password Generator">Secure Password Architect</a> |
+            <a href="number-generator.html" class="hover:text-primary transition-colors mx-3"
+                title="Cryptographic Random Number Generator">High-Precision Range Generator</a> |
+            <a href="name-picker.html" class="hover:text-primary transition-colors mx-3"
+                title="Cryptographic Name Picker Tool">Unbiased Name Picker</a> |
+            <a href="../index.html#identities" class="hover:text-primary transition-colors mx-3"
+                title="Regional Identity Engine">Regional Identity Engine</a>
+        </nav>
+        <nav aria-label="Site Map" class="mt-2">
+            <a href="../index.html" class="hover:text-primary transition-colors mx-3" title="Home">Home</a> |
+            <a href="../about.html" class="hover:text-primary transition-colors mx-3" title="About Us">About</a> |
+            <a href="../privacy.html" class="hover:text-primary transition-colors mx-3" title="Privacy Policy">Privacy</a> |
+            <a href="../terms.html" class="hover:text-primary transition-colors mx-3" title="Terms of Service">Terms</a>
         </nav>
         <span class="text-xs text-on-surface-variant mt-2">&copy; 2026 Random Generator Pro — Cryptographic Professional
             Utility Suite</span>
@@ -611,13 +619,13 @@
         class="xl:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-black border-t border-white shadow-2xl">
         <a aria-label="Navigate to Numbers"
             class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors"
-            href="/tools/number-generator.html">
+            href="number-generator.html">
             <span class="material-symbols-outlined text-[20px]">pin</span>
             <span class="text-[10px] font-label-caps tracking-wider">Numbers</span>
         </a>
         <a aria-label="Navigate to Passwords"
             class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors"
-            href="/index.html#passwords">
+            href="../index.html#passwords">
             <span class="material-symbols-outlined text-[20px]">password</span>
             <span class="text-[10px] font-label-caps tracking-wider">Passwords</span>
         </a>
@@ -629,13 +637,16 @@
         </a>
         <a aria-label="Navigate to Random Names"
             class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors"
-            href="/index.html#identities">
+            href="../index.html#identities">
             <span class="material-symbols-outlined text-[20px]">fingerprint</span>
             <span class="text-[10px] font-label-caps tracking-wider">Random Names</span>
         </a>
     </nav>
     <div style="background: #111; border-top: 2px solid #fff; padding: 20px; text-align: center; width: 100%; position: relative; z-index: 9999;">
-        <a href="/privacy.html" style="color:#fff; margin: 0 10px;">Privacy Policy</a> | <a href="/ads.txt" style="color:#fff; margin: 0 10px;">Ads.txt</a>
+        <a href="../about.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">About</a> |
+        <a href="../privacy.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Privacy Policy</a> |
+        <a href="../terms.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Terms</a> |
+        <a href="../ads.txt" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Ads.txt</a>
     </div>
     <script src="/engine.min.js?v=2.0"></script>
     <script>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'site-cache-v11-2';
+const CACHE_NAME = 'site-cache-v11-3';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
@@ -7,12 +7,14 @@ const GOOGLE_FONTS = [
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
+  '/about.html',
+  '/privacy.html',
+  '/terms.html',
   '/manifest.json',
   '/favicon.svg',
   '/icon-192x192.png',
   '/icon-512x512.png',
   '/404.html',
-  '/privacy.html',
   '/tools/number-generator.html',
   '/tools/name-picker.html',
   '/data/names-US.json',
