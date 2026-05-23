@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en-IN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>About Us | The Engineering Behind Random Generator Pro</title>
+    <meta name="description"
+        content="Learn about the engineering behind Random Generator Pro. Discover why browser-based cryptographic generation using hardware-backed entropy is superior for privacy and security." />
+    <link rel="canonical" href="https://randomgeneratorpro.online/about.html" />
+    <meta property="og:title" content="About Us | The Engineering Behind Random Generator Pro" />
+    <meta property="og:description" content="Discover the cryptographic engineering, hardware-backed entropy, and zero-knowledge architecture behind Random Generator Pro." />
+    <meta property="og:url" content="https://randomgeneratorpro.online/about.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://randomgeneratorpro.online/og-image.png" />
+    <meta name="twitter:image" content="https://randomgeneratorpro.online/og-image.png" />
+    <meta name="color-scheme" content="dark" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo+Narrow:wght@400;600;700&amp;family=Geist:wght@400;700&amp;family=Hanken+Grotesk:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="preload" as="style" />
+    <script defer src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e5e2e1",
+                        "inverse-primary": "#5d5f5f",
+                        "surface-tint": "#c6c6c7",
+                        "surface-container": "#1f1f1f",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-secondary": "#313030",
+                        "primary": "#ffffff",
+                        "surface-container-high": "#2a2a2a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#636565",
+                        "surface-bright": "#393939",
+                        "primary-fixed": "#e2e2e2",
+                        "outline-variant": "#444748",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "error": "#ffb4ab",
+                        "outline": "#8e9192",
+                        "on-primary": "#000000",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-container": "#b7b5b4",
+                        "surface-container-low": "#1b1b1b",
+                        "secondary": "#c8c6c5",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-container-highest": "#353535",
+                        "on-tertiary-container": "#636565",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-dim": "#131313",
+                        "tertiary": "#ffffff",
+                        "on-error": "#690005",
+                        "on-surface": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "primary-container": "#ffffff",
+                        "on-primary-fixed": "#1a1c1c",
+                        "on-background": "#e2e2e2",
+                        "surface-variant": "#353535",
+                        "on-surface-variant": "#c4c7c8",
+                        "primary-fixed-dim": "#c6c6c7",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-container": "#e2e2e2",
+                        "background": "#000000",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface": "#131313",
+                        "tertiary-fixed": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "secondary-container": "#474746",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-fixed-variant": "#454747"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "1px",
+                        "margin-desktop": "32px",
+                        "bento-gap": "12px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Archivo Narrow"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-caps": ["Geist"],
+                        "headline-lg": ["Archivo Narrow"],
+                        "display-data-mobile": ["Geist"],
+                        "headline-md": ["Archivo Narrow"],
+                        "display-data": ["Geist"]
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="preload"
+        as="style" />
+    <style>
+        body, html { overflow-x: hidden; width: 100%; position: relative; background-color: #000; color: #e2e2e2; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        html { scrollbar-width: thin; scrollbar-color: #ffffff #000000; }
+        ::-webkit-scrollbar { width: 8px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #fff; border: 1px solid #000; }
+        ::-webkit-scrollbar-thumb:hover { background: #ccc; }
+        .content-card { background-color: #111; border: 1px solid #fff; padding: 2.5rem; margin-bottom: 1.5rem; }
+        .content-card h2 { color: #fff; font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+        .content-card h3 { color: #ccc; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .content-card p, .content-card li { line-height: 1.85; margin-bottom: 0.75rem; color: #c4c7c8; }
+        .content-card ul { padding-left: 1.5rem; list-style: disc; }
+        .content-card code { background: #222; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        a.back-link { color: #c4c7c8; text-decoration: none; transition: color 0.2s; }
+        a.back-link:hover { color: #fff; }
+    </style>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+
+<body class="flex flex-col min-h-screen bg-black">
+    <div class="max-w-4xl mx-auto w-full px-4 py-12">
+        <!-- Back to Home -->
+        <a href="/index.html" class="back-link inline-flex items-center gap-2 mb-8 text-sm uppercase tracking-widest font-label-caps">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
+
+        <h1 class="text-headline-lg font-headline-lg text-white font-bold uppercase tracking-widest mb-2">About Random Generator Pro</h1>
+        <p class="text-on-surface-variant text-sm mb-8">The Engineering Behind Enterprise-Grade Browser-Based Randomization</p>
+
+        <div class="content-card">
+            <h2>Why Browser-Based Generation is Superior for Privacy</h2>
+            <p>In an era increasingly defined by stringent data privacy regulations, complex compliance frameworks, and frequent data breaches, the foundational architecture of a random number generator or an enterprise-grade name picker is a critical technical consideration. Server-side data generation, while historically the common standard, introduces significant and often unnecessary privacy vectors. When sensitive data—such as cryptographic passwords or internal mock user profiles—is generated on a remote server, it immediately becomes susceptible to interception during network transit and unauthorized access while temporarily stored in server memory. Browser-based generation fundamentally and elegantly mitigates these severe risks by executing all computational logic entirely within the user's local hardware environment.</p>
+            <p>By utilizing highly optimized client-side JavaScript, a modern web-based random number generator ensures that the generated data never physically leaves the device. Whether you're generating a hyper-secure master password for a financial institution or using a lightweight name picker to quickly select a contest winner, the entire computational process is completely contained within the browser's secure sandbox. This decentralized architecture guarantees strict zero-knowledge operations; the software service provider has absolutely no visibility into the generated outputs, and absolutely no data is transmitted across the open internet, cached in proxy servers, or stored in any external cloud databases.</p>
+            <p>This local execution model aligns flawlessly with modern, global privacy frameworks—including GDPR, CCPA, and India's Digital Personal Data Protection Act—empowering everyday users and enterprise teams alike with absolute cryptographic control over their highly sensitive information. As legitimate privacy concerns and cybersecurity threats continue to rapidly shape our digital interactions, the widespread adoption of secure, browser-based utilities represents a critical, non-negotiable shift toward secure, decentralized data processing. In this modern paradigm, absolute trust is established not through fragile privacy policies or corporate promises, but through undeniable mathematical proof and infallible architectural certainty.</p>
+
+            <h2>Hardware-Backed Entropy: The Core of Our Cryptographic Engine</h2>
+            <p>Random Generator Pro is engineered around the Web Crypto API's <code>crypto.getRandomValues()</code> interface—the same cryptographic entropy source trusted by major financial institutions, government security agencies, and enterprise-grade password managers worldwide. Unlike legacy utilities that depend on the mathematically predictable <code>Math.random()</code> pseudo-random number generator, our platform draws entropy directly from the operating system's hardware-level randomness pool.</p>
+            <p>This pool aggregates environmental noise from CPU timing jitter, interrupt request sequences, and peripheral device input fluctuations, producing output that is computationally indistinguishable from true randomness and completely immune to statistical prediction or reverse-engineering. The distinction is critical: <code>Math.random()</code> uses a deterministic algorithm (typically xorshift128+) that can be reverse-engineered given sufficient output samples, while <code>crypto.getRandomValues()</code> provides cryptographic-grade randomness suitable for key generation, nonce creation, and security-critical applications.</p>
+
+            <h3>How We Ensure Zero Modulo Bias</h3>
+            <p>When generating a random integer within a specific range, naive implementations introduce "modulo bias"—a subtle statistical skew that makes certain values slightly more probable than others. Random Generator Pro eliminates this bias entirely by implementing a rejection sampling algorithm. We generate a random 32-bit unsigned integer from the hardware entropy pool, compute the valid range, and reject any values that would introduce bias. This process repeats until an unbiased value is obtained, ensuring that every integer within the requested range has a mathematically identical probability of selection.</p>
+
+            <h2>Our Technology Stack</h2>
+            <ul>
+                <li><strong>Cryptographic Engine:</strong> Web Crypto API (<code>crypto.getRandomValues()</code>) for all random generation</li>
+                <li><strong>Architecture:</strong> 100% client-side JavaScript — zero server-side processing</li>
+                <li><strong>Offline Capability:</strong> Progressive Web App (PWA) with Service Worker cache-first strategy</li>
+                <li><strong>Regional Data:</strong> Pre-cached name datasets for US, UK, India/South Asia, and Japan</li>
+                <li><strong>Privacy Model:</strong> Zero-knowledge, zero-transmission — no data ever leaves the browser sandbox</li>
+                <li><strong>Standards Compliance:</strong> NIST SP 800-63B, OWASP password guidelines, WCAG 2.1 accessibility</li>
+            </ul>
+
+            <h2>Our Mission</h2>
+            <p>Random Generator Pro was born from a simple frustration: existing online random generators either rely on insecure pseudo-random algorithms, transmit generated data to remote servers, or lock essential features behind paywalls. We believe that cryptographically secure randomization should be free, private, and universally accessible.</p>
+            <p>Our mission is to provide developers, educators, security professionals, and everyday users with a professional-grade randomization suite that meets the highest standards of cryptographic security while maintaining absolute data privacy. Every feature we build adheres to three non-negotiable principles: <strong>hardware-backed entropy</strong>, <strong>zero data transmission</strong>, and <strong>complete offline functionality</strong>.</p>
+        </div>
+    </div>
+
+    <!-- Site Map Footer -->
+    <footer class="mt-8 pt-8 border-t border-outline-variant flex flex-col justify-center items-center pb-8 text-on-surface-variant font-label-caps text-sm uppercase tracking-widest gap-4">
+        <nav aria-label="Site Map">
+            <a href="/index.html" class="hover:text-white transition-colors mx-3" title="Home">Home</a> |
+            <a href="/about.html" class="hover:text-white transition-colors mx-3" title="About Us">About</a> |
+            <a href="/privacy.html" class="hover:text-white transition-colors mx-3" title="Privacy Policy">Privacy</a> |
+            <a href="/terms.html" class="hover:text-white transition-colors mx-3" title="Terms of Service">Terms</a>
+        </nav>
+        <span class="text-xs text-on-surface-variant mt-2">&copy; 2026 Random Generator Pro &mdash; Cryptographic Professional Utility Suite</span>
+    </footer>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => { });
+            });
+        }
+    </script>
+</body>
+
+</html>

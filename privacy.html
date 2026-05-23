@@ -1,116 +1,241 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html class="dark" lang="en-IN">
+
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Privacy Policy - Random Generator Pro</title>
-    <meta name="description" content="Privacy Policy for Random Generator Pro. Learn how we protect your data with client-side processing and zero-knowledge architecture." />
-    <link rel="canonical" href="https://randomgeneratorpro.online/" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;700&display=swap" rel="stylesheet" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>Privacy Policy | Random Generator Pro - Zero-Knowledge Data Security</title>
+    <meta name="description"
+        content="Privacy Policy for Random Generator Pro. Learn how we protect your data with zero-knowledge architecture, client-side processing, and full GDPR/CCPA compliance." />
+    <link rel="canonical" href="https://randomgeneratorpro.online/privacy.html" />
+    <meta property="og:title" content="Privacy Policy | Random Generator Pro - Zero-Knowledge Data Security" />
+    <meta property="og:description" content="Zero-knowledge data security. All generation happens client-side. Full GDPR and CCPA compliance." />
+    <meta property="og:url" content="https://randomgeneratorpro.online/privacy.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://randomgeneratorpro.online/og-image.png" />
+    <meta name="twitter:image" content="https://randomgeneratorpro.online/og-image.png" />
+    <meta name="color-scheme" content="dark" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo+Narrow:wght@400;600;700&amp;family=Geist:wght@400;700&amp;family=Hanken+Grotesk:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="preload" as="style" />
+    <script defer src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e5e2e1",
+                        "inverse-primary": "#5d5f5f",
+                        "surface-tint": "#c6c6c7",
+                        "surface-container": "#1f1f1f",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-secondary": "#313030",
+                        "primary": "#ffffff",
+                        "surface-container-high": "#2a2a2a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#636565",
+                        "surface-bright": "#393939",
+                        "primary-fixed": "#e2e2e2",
+                        "outline-variant": "#444748",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "error": "#ffb4ab",
+                        "outline": "#8e9192",
+                        "on-primary": "#000000",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-container": "#b7b5b4",
+                        "surface-container-low": "#1b1b1b",
+                        "secondary": "#c8c6c5",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-container-highest": "#353535",
+                        "on-tertiary-container": "#636565",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-dim": "#131313",
+                        "tertiary": "#ffffff",
+                        "on-error": "#690005",
+                        "on-surface": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "primary-container": "#ffffff",
+                        "on-primary-fixed": "#1a1c1c",
+                        "on-background": "#e2e2e2",
+                        "surface-variant": "#353535",
+                        "on-surface-variant": "#c4c7c8",
+                        "primary-fixed-dim": "#c6c6c7",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-container": "#e2e2e2",
+                        "background": "#000000",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface": "#131313",
+                        "tertiary-fixed": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "secondary-container": "#474746",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-fixed-variant": "#454747"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "1px",
+                        "margin-desktop": "32px",
+                        "bento-gap": "12px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Archivo Narrow"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-caps": ["Geist"],
+                        "headline-lg": ["Archivo Narrow"],
+                        "display-data-mobile": ["Geist"],
+                        "headline-md": ["Archivo Narrow"],
+                        "display-data": ["Geist"]
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="preload"
+        as="style" />
     <style>
-        body { font-family: 'Geist', sans-serif; background: #000; color: #e2e2e2; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.8; }
-        h1 { color: #fff; font-size: 2rem; margin-bottom: 0.5rem; }
-        h2 { color: #fff; font-size: 1.35rem; margin-top: 2.5rem; margin-bottom: 0.75rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
-        h3 { color: #ccc; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
-        a { color: #888; text-decoration: none; transition: color 0.2s; }
-        a:hover { color: #fff; }
-        ul, ol { padding-left: 1.5rem; margin: 0.75rem 0; }
-        li { margin-bottom: 0.5rem; }
-        .container { border: 1px solid #333; padding: 40px; background: #111; }
-        .effective-date { color: #888; font-size: 0.9rem; }
-        code { background: #222; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        body, html { overflow-x: hidden; width: 100%; position: relative; background-color: #000; color: #e2e2e2; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        html { scrollbar-width: thin; scrollbar-color: #ffffff #000000; }
+        ::-webkit-scrollbar { width: 8px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #fff; border: 1px solid #000; }
+        ::-webkit-scrollbar-thumb:hover { background: #ccc; }
+        .content-card { background-color: #111; border: 1px solid #fff; padding: 2.5rem; margin-bottom: 1.5rem; }
+        .content-card h2 { color: #fff; font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+        .content-card h3 { color: #ccc; font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        .content-card p, .content-card li { line-height: 1.85; margin-bottom: 0.75rem; color: #c4c7c8; }
+        .content-card ul, .content-card ol { padding-left: 1.5rem; margin: 0.75rem 0; }
+        .content-card ul { list-style: disc; }
+        .content-card code { background: #222; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+        a.back-link { color: #c4c7c8; text-decoration: none; transition: color 0.2s; }
+        a.back-link:hover { color: #fff; }
     </style>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
-<body>
-    <div class="container">
-        <h1>Privacy Policy</h1>
-        <p class="effective-date">Effective Date: January 1, 2024 &mdash; Last Updated: May 20, 2026</p>
 
-        <h2>1. Introduction</h2>
-        <p>Welcome to Random Generator Pro (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), accessible at <a href="https://randomgeneratorpro.online">randomgeneratorpro.online</a>. We are committed to protecting your privacy and ensuring complete transparency about how information is handled when you use our services. This Privacy Policy explains what data we collect, how it is used, and your rights under applicable data protection laws.</p>
-        <p>Random Generator Pro is a suite of browser-based utility tools—including a cryptographic random number generator, a password architect, and a regional name picker. All random generation occurs entirely within your local browser environment using the <code>crypto.getRandomValues()</code> Web Crypto API. We operate on a strict <strong>zero-knowledge architecture</strong>: no generated output (numbers, passwords, names, or identities) is ever transmitted to, processed by, or stored on our servers.</p>
+<body class="flex flex-col min-h-screen bg-black">
+    <div class="max-w-4xl mx-auto w-full px-4 py-12">
+        <!-- Back to Home -->
+        <a href="/index.html" class="back-link inline-flex items-center gap-2 mb-8 text-sm uppercase tracking-widest font-label-caps">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            Back to Home
+        </a>
 
-        <h2>2. Information We Collect</h2>
-        <h3>2.1 Information You Provide</h3>
-        <p>We do not require registration, login credentials, or any personal information to use our tools. No forms on our website collect personally identifiable information (PII) such as your name, email address, or phone number, unless you voluntarily contact us via the support email address listed below.</p>
+        <h1 class="text-headline-lg font-headline-lg text-white font-bold uppercase tracking-widest mb-2">Privacy Policy</h1>
+        <p class="text-on-surface-variant text-sm mb-8">Effective Date: January 1, 2024 &mdash; Last Updated: May 23, 2026</p>
 
-        <h3>2.2 Automatically Collected Information</h3>
-        <p>When you visit our website, certain non-personally identifiable technical information may be collected automatically through standard web server logs and third-party analytics services. This may include:</p>
-        <ul>
-            <li>IP address (anonymized where technically feasible)</li>
-            <li>Browser type and version</li>
-            <li>Operating system</li>
-            <li>Referring URL and exit pages</li>
-            <li>Date and time of access</li>
-            <li>Pages viewed and interaction patterns</li>
-        </ul>
-        <p>This information is used solely for website performance monitoring, traffic analysis, and improving user experience. It is never used to personally identify individual visitors.</p>
+        <div class="content-card">
+            <h2>1. Introduction</h2>
+            <p>Welcome to Random Generator Pro (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;), accessible at <a href="https://randomgeneratorpro.online" class="back-link hover:text-white">randomgeneratorpro.online</a>. We are committed to protecting your privacy and ensuring complete transparency about how information is handled when you use our services. This Privacy Policy explains what data we collect, how it is used, and your rights under applicable data protection laws.</p>
+            <p>Random Generator Pro is a suite of browser-based utility tools—including a cryptographic random number generator, a password architect, and a regional name picker. All random generation occurs entirely within your local browser environment using the <code>crypto.getRandomValues()</code> Web Crypto API. We operate on a strict <strong>zero-knowledge architecture</strong>: no generated output (numbers, passwords, names, or identities) is ever transmitted to, processed by, or stored on our servers.</p>
 
-        <h3>2.3 Local Data Storage</h3>
-        <p>Random Generator Pro uses your browser's <code>localStorage</code> mechanism to cache regional name datasets locally on your device for offline functionality. This data is stored entirely on your machine and is never transmitted to our servers. You may clear this data at any time through your browser's settings. Our Progressive Web App (PWA) Service Worker also caches static application assets locally for offline reliability; these cached files contain no personal data.</p>
+            <h2>2. Information We Collect</h2>
+            <h3>2.1 Information You Provide</h3>
+            <p>We do not require registration, login credentials, or any personal information to use our tools. No forms on our website collect personally identifiable information (PII) such as your name, email address, or phone number, unless you voluntarily contact us via the support email address listed below.</p>
 
-        <h2>3. Google AdSense &amp; Advertising Cookies</h2>
-        <p>We use Google AdSense, a third-party advertising service provided by Google LLC, to display advertisements on our website. Google AdSense uses cookies and similar tracking technologies to serve ads based on your prior visits to our site and other websites on the Internet.</p>
+            <h3>2.2 Automatically Collected Information</h3>
+            <p>When you visit our website, certain non-personally identifiable technical information may be collected automatically through standard web server logs and third-party analytics services. This may include:</p>
+            <ul>
+                <li>IP address (anonymized where technically feasible)</li>
+                <li>Browser type and version</li>
+                <li>Operating system</li>
+                <li>Referring URL and exit pages</li>
+                <li>Date and time of access</li>
+                <li>Pages viewed and interaction patterns</li>
+            </ul>
+            <p>This information is used solely for website performance monitoring, traffic analysis, and improving user experience. It is never used to personally identify individual visitors.</p>
 
-        <h3>3.1 DART Cookie Disclosure</h3>
-        <p>Google's use of the DoubleClick DART cookie enables it to serve ads to you based on your browsing history across this website and other sites. The DART cookie does not track personal information such as your name, email address, or physical address. You may opt out of the DART cookie at any time by visiting the <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">Google Ads Settings page</a>.</p>
+            <h3>2.3 Local Data Storage</h3>
+            <p>Random Generator Pro uses your browser's <code>localStorage</code> mechanism to cache regional name datasets locally on your device for offline functionality. This data is stored entirely on your machine and is never transmitted to our servers. You may clear this data at any time through your browser's settings. Our Progressive Web App (PWA) Service Worker also caches static application assets locally for offline reliability; these cached files contain no personal data.</p>
 
-        <h3>3.2 Third-Party Advertising Partners</h3>
-        <p>Our advertising partners, including Google, may use cookies, web beacons, and similar technologies to collect non-personal information for the purposes of:</p>
-        <ul>
-            <li>Serving personalized advertisements based on your interests</li>
-            <li>Measuring advertising effectiveness</li>
-            <li>Limiting the number of times you see a particular advertisement</li>
-            <li>Analyzing traffic patterns and user engagement</li>
-        </ul>
-        <p>For more information about how Google uses data from sites that use their services, please review <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>. You can also opt out of personalized advertising by visiting <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">AboutAds.info</a> or <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer">NAI's opt-out tool</a>.</p>
+            <h2>3. Google AdSense &amp; Advertising Cookies</h2>
+            <p>We use Google AdSense, a third-party advertising service provided by Google LLC, to display advertisements on our website. Google AdSense uses cookies and similar tracking technologies to serve ads based on your prior visits to our site and other websites on the Internet.</p>
 
-        <h2>4. Cookies</h2>
-        <p>Random Generator Pro itself does not set first-party cookies. However, third-party services integrated into our site (such as Google AdSense and Google Fonts) may set their own cookies. These cookies are governed by the respective third party's privacy and cookie policies. You can manage or disable cookies through your browser's settings at any time, though doing so may affect the functionality of certain features.</p>
+            <h3>3.1 DART Cookie Disclosure</h3>
+            <p>Google's use of the DoubleClick DART cookie enables it to serve ads to you based on your browsing history across this website and other sites. The DART cookie does not track personal information such as your name, email address, or physical address. You may opt out of the DART cookie at any time by visiting the <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" class="back-link hover:text-white">Google Ads Settings page</a>.</p>
 
-        <h2>5. GDPR (General Data Protection Regulation) Compliance</h2>
-        <p>If you are a resident of the European Economic Area (EEA), the United Kingdom, or Switzerland, you are entitled to certain data protection rights under the General Data Protection Regulation. These rights include:</p>
-        <ul>
-            <li><strong>Right of Access:</strong> You may request confirmation of whether we process your personal data and obtain a copy of that data.</li>
-            <li><strong>Right to Rectification:</strong> You may request correction of inaccurate personal data.</li>
-            <li><strong>Right to Erasure:</strong> You may request deletion of your personal data under certain circumstances.</li>
-            <li><strong>Right to Restrict Processing:</strong> You may request restriction of processing of your personal data.</li>
-            <li><strong>Right to Data Portability:</strong> You may request transfer of your personal data in a structured, machine-readable format.</li>
-            <li><strong>Right to Object:</strong> You may object to processing of your personal data for legitimate interests or direct marketing.</li>
-        </ul>
-        <p>Since Random Generator Pro does not collect, store, or process personal data through its core tools, most data subject requests are inherently satisfied by our architecture. For any GDPR-related inquiries, please contact us at the email address provided below.</p>
+            <h3>3.2 Third-Party Advertising Partners</h3>
+            <p>Our advertising partners, including Google, may use cookies, web beacons, and similar technologies to collect non-personal information for the purposes of:</p>
+            <ul>
+                <li>Serving personalized advertisements based on your interests</li>
+                <li>Measuring advertising effectiveness</li>
+                <li>Limiting the number of times you see a particular advertisement</li>
+                <li>Analyzing traffic patterns and user engagement</li>
+            </ul>
+            <p>For more information about how Google uses data from sites that use their services, please review <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" class="back-link hover:text-white">Google's Privacy Policy</a>. You can also opt out of personalized advertising by visiting <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer" class="back-link hover:text-white">AboutAds.info</a> or <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer" class="back-link hover:text-white">NAI's opt-out tool</a>.</p>
 
-        <h2>6. CCPA (California Consumer Privacy Act) Compliance</h2>
-        <p>If you are a California resident, the California Consumer Privacy Act grants you additional rights regarding your personal information. Under the CCPA, you have the right to:</p>
-        <ul>
-            <li>Request disclosure of the categories and specific pieces of personal information collected about you.</li>
-            <li>Request deletion of personal information collected from you.</li>
-            <li>Opt out of the sale of your personal information.</li>
-            <li>Non-discrimination for exercising any of your CCPA rights.</li>
-        </ul>
-        <p><strong>We do not sell personal data to third parties.</strong> We do not collect personal data through our tools. If you wish to exercise your CCPA rights or have questions, please contact us using the information below.</p>
+            <h2>4. Cookies</h2>
+            <p>Random Generator Pro itself does not set first-party cookies. However, third-party services integrated into our site (such as Google AdSense and Google Fonts) may set their own cookies. These cookies are governed by the respective third party's privacy and cookie policies. You can manage or disable cookies through your browser's settings at any time, though doing so may affect the functionality of certain features.</p>
 
-        <h2>7. Children&rsquo;s Privacy</h2>
-        <p>Random Generator Pro is not directed at children under the age of 13 (or the applicable age of digital consent in your jurisdiction). We do not knowingly collect personal information from children. If you believe a child has provided us with personal data, please contact us immediately, and we will take steps to delete such information.</p>
+            <h2>5. GDPR (General Data Protection Regulation) Compliance</h2>
+            <p>If you are a resident of the European Economic Area (EEA), the United Kingdom, or Switzerland, you are entitled to certain data protection rights under the General Data Protection Regulation. These rights include:</p>
+            <ul>
+                <li><strong>Right of Access:</strong> You may request confirmation of whether we process your personal data and obtain a copy of that data.</li>
+                <li><strong>Right to Rectification:</strong> You may request correction of inaccurate personal data.</li>
+                <li><strong>Right to Erasure:</strong> You may request deletion of your personal data under certain circumstances.</li>
+                <li><strong>Right to Restrict Processing:</strong> You may request restriction of processing of your personal data.</li>
+                <li><strong>Right to Data Portability:</strong> You may request transfer of your personal data in a structured, machine-readable format.</li>
+                <li><strong>Right to Object:</strong> You may object to processing of your personal data for legitimate interests or direct marketing.</li>
+            </ul>
+            <p>Since Random Generator Pro does not collect, store, or process personal data through its core tools, most data subject requests are inherently satisfied by our architecture. For any GDPR-related inquiries, please contact us at the email address provided below.</p>
 
-        <h2>8. Data Security</h2>
-        <p>We employ industry-standard security measures to protect the integrity and availability of our website. All connections to randomgeneratorpro.online are encrypted via HTTPS/TLS. Our Content Security Policy (CSP) headers restrict the loading of unauthorized scripts and resources. Since our core tools process data exclusively client-side, there is no server-side database that could be compromised.</p>
+            <h2>6. CCPA (California Consumer Privacy Act) Compliance</h2>
+            <p>If you are a California resident, the California Consumer Privacy Act grants you additional rights regarding your personal information. Under the CCPA, you have the right to:</p>
+            <ul>
+                <li>Request disclosure of the categories and specific pieces of personal information collected about you.</li>
+                <li>Request deletion of personal information collected from you.</li>
+                <li>Opt out of the sale of your personal information.</li>
+                <li>Non-discrimination for exercising any of your CCPA rights.</li>
+            </ul>
+            <p><strong>We do not sell personal data to third parties.</strong> We do not collect personal data through our tools. If you wish to exercise your CCPA rights or have questions, please contact us using the information below.</p>
 
-        <h2>9. Third-Party Links</h2>
-        <p>Our website may contain links to third-party websites or services that are not operated by us. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites. We encourage you to review the privacy policy of every site you visit.</p>
+            <h2>7. Children&rsquo;s Privacy</h2>
+            <p>Random Generator Pro is not directed at children under the age of 13 (or the applicable age of digital consent in your jurisdiction). We do not knowingly collect personal information from children. If you believe a child has provided us with personal data, please contact us immediately, and we will take steps to delete such information.</p>
 
-        <h2>10. Changes to This Privacy Policy</h2>
-        <p>We reserve the right to update or modify this Privacy Policy at any time. Changes will be posted on this page with an updated &ldquo;Last Updated&rdquo; date. Your continued use of Random Generator Pro after any modifications constitutes your acceptance of the revised policy. We encourage you to review this page periodically.</p>
+            <h2>8. Data Security</h2>
+            <p>We employ industry-standard security measures to protect the integrity and availability of our website. All connections to randomgeneratorpro.online are encrypted via HTTPS/TLS. Our Content Security Policy (CSP) headers restrict the loading of unauthorized scripts and resources. Since our core tools process data exclusively client-side, there is no server-side database that could be compromised.</p>
 
-        <h2>11. Contact Us</h2>
-        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at:</p>
-        <p><strong>Email:</strong> <a href="mailto:support@randomgeneratorpro.online">support@randomgeneratorpro.online</a></p>
-        <p><strong>Website:</strong> <a href="https://randomgeneratorpro.online">https://randomgeneratorpro.online</a></p>
+            <h2>9. Third-Party Links</h2>
+            <p>Our website may contain links to third-party websites or services that are not operated by us. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party websites. We encourage you to review the privacy policy of every site you visit.</p>
 
-        <p style="margin-top:40px; border-top:1px solid #333; padding-top:20px;">
-            <a href="/">&#8592; Return to Random Generator Pro</a>
-        </p>
+            <h2>10. Changes to This Privacy Policy</h2>
+            <p>We reserve the right to update or modify this Privacy Policy at any time. Changes will be posted on this page with an updated &ldquo;Last Updated&rdquo; date. Your continued use of Random Generator Pro after any modifications constitutes your acceptance of the revised policy. We encourage you to review this page periodically.</p>
+
+            <h2>11. Contact Us</h2>
+            <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us at:</p>
+            <p><strong>Email:</strong> <a href="mailto:support@randomgeneratorpro.online" class="back-link hover:text-white">support@randomgeneratorpro.online</a></p>
+            <p><strong>Website:</strong> <a href="https://randomgeneratorpro.online" class="back-link hover:text-white">https://randomgeneratorpro.online</a></p>
+        </div>
     </div>
+
+    <!-- Site Map Footer -->
+    <footer class="mt-8 pt-8 border-t border-outline-variant flex flex-col justify-center items-center pb-8 text-on-surface-variant font-label-caps text-sm uppercase tracking-widest gap-4">
+        <nav aria-label="Site Map">
+            <a href="/index.html" class="hover:text-white transition-colors mx-3" title="Home">Home</a> |
+            <a href="/about.html" class="hover:text-white transition-colors mx-3" title="About Us">About</a> |
+            <a href="/privacy.html" class="hover:text-white transition-colors mx-3" title="Privacy Policy">Privacy</a> |
+            <a href="/terms.html" class="hover:text-white transition-colors mx-3" title="Terms of Service">Terms</a>
+        </nav>
+        <span class="text-xs text-on-surface-variant mt-2">&copy; 2026 Random Generator Pro &mdash; Cryptographic Professional Utility Suite</span>
+    </footer>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => { });
+            });
+        }
+    </script>
 </body>
+
 </html>
