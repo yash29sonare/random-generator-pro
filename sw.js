@@ -1,4 +1,4 @@
-const CACHE_NAME = 'site-cache-v11-4';
+const CACHE_NAME = 'site-cache-v12-0';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
@@ -61,6 +61,25 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   if (event.request.url.includes('googleads') || event.request.url.includes('adsense') || event.request.url.includes('doubleclick')) return;
+
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      (async () => {
+        try {
+          const networkResponse = await fetch(event.request);
+          if (networkResponse.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        } catch (error) {
+          const cachedResponse = await caches.match(event.request);
+          return cachedResponse || caches.match('/index.html');
+        }
+      })()
+    );
+    return;
+  }
 
   if (event.request.url.includes('names')) {
     event.respondWith(
