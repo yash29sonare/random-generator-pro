@@ -5,12 +5,22 @@
 <head>
     <meta charset="utf-8" />
   <style>
-    html { background-color: #000000 !important; visibility: hidden; }
-    html.dark { background-color: #000000 !important; }
-    html.light { background-color: #ffffff !important; }
+    html { background-color: #000000; }
+    html:not(.ready) body { opacity: 0; visibility: hidden; }
+    body { transition: opacity 0.4s ease-in-out; }
+    html.dark { background-color: #000000; }
+    html.light { background-color: #ffffff; }
   </style>
-  <script>(function(){const t=localStorage.getItem('theme')||'dark';document.documentElement.classList.add(t);const s=()=>{document.documentElement.style.visibility='visible';};if(document.readyState==='loading'){window.addEventListener('DOMContentLoaded',s);}else{s();}setTimeout(s,1500);})();</script>
-  <noscript><style>html{visibility:visible!important;}</style></noscript>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.add(theme);
+      const revealSite = () => { document.documentElement.classList.add('ready'); };
+      if (document.readyState === 'loading') { window.addEventListener('DOMContentLoaded', revealSite); } else { revealSite(); }
+      setTimeout(revealSite, 1000);
+    })();
+  </script>
+  <noscript><style>html body { opacity: 1 !important; visibility: visible !important; }</style></noscript>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
     <title>Precision Random Number Generator | Cryptographically Secure &amp; Unbiased Pro</title>
