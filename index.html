@@ -19,24 +19,26 @@
 
   <script>
     (function() {
-      // 1. Immediate Theme Sync
-      const theme = localStorage.getItem('theme') || 'dark';
-      document.documentElement.classList.add(theme);
-      
-      // 2. The Reveal Function
       const revealSite = () => {
         document.documentElement.classList.add('ready');
       };
 
-      // 3. Trigger reveal on Load or Timeout
+      // Force reveal even if storage, CDN scripts, or later startup work fail.
+      setTimeout(revealSite, 1000);
+
+      try {
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.classList.remove('dark', 'light');
+        document.documentElement.classList.add(theme === 'light' ? 'light' : 'dark');
+      } catch (error) {
+        document.documentElement.classList.add('dark');
+      }
+
       if (document.readyState === 'loading') {
         window.addEventListener('DOMContentLoaded', revealSite);
       } else {
         revealSite();
       }
-      
-      // Safety net: force reveal after 1 second if anything hangs
-      setTimeout(revealSite, 1000);
     })();
   </script>
   
@@ -63,9 +65,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="preload" as="style" />
-    <script defer src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
-        tailwind.config = {
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
@@ -139,6 +141,7 @@
             }
         }
     </script>
+    <script defer src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="preload"
         as="style" />
     <style>
