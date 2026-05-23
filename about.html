@@ -4,6 +4,32 @@
 
 <head>
     <meta charset="utf-8" />
+  <style>
+    /* 1. Immediate style lock to prevent white/basic HTML flash */
+    html { background-color: #000000 !important; visibility: hidden; }
+    html.dark { background-color: #000000 !important; }
+    html.light { background-color: #ffffff !important; }
+  </style>
+
+  <script>
+    (function() {
+      // 2. Immediate Theme Sync before the browser paints
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.add(theme);
+      
+      // 3. Show site logic
+      const showSite = () => { document.documentElement.style.visibility = 'visible'; };
+      if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', showSite);
+      } else {
+        showSite();
+      }
+      // Dead-man's switch: force visibility after 1.5s if scripts hang
+      setTimeout(showSite, 1500); 
+    })();
+  </script>
+  
+  <noscript><style>html { visibility: visible !important; }</style></noscript>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
