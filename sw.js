@@ -1,10 +1,12 @@
-const CACHE_NAME = 'site-cache-v12-2';
+const CACHE_NAME = 'site-cache-v13-0';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
 ];
 
 const PRECACHE_ASSETS = [
+  '/',
+  '/index.html',
   '/about.html',
   '/privacy.html',
   '/terms.html',
@@ -28,29 +30,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
-      
-      // Cache basic assets
       await cache.addAll(ASSETS_TO_CACHE);
-
-      // Check minified vs non-minified
-      try {
-        const engMinRes = await fetch('./engine.min.js');
-        if (engMinRes.ok) {
-          await cache.put('./engine.min.js', engMinRes);
-        } else {
-          await cache.add('./engine.js');
-        }
-      } catch (e) {
-        await cache.add('./engine.js');
-      }
-
-      // Cache bulk generation engine
-      try {
-        const bulkRes = await fetch('./bulk.js');
-        if (bulkRes.ok) await cache.put('./bulk.js', bulkRes);
-      } catch (e) { /* non-critical */ }
-
-      // Critical CSS is now inlined, no need to cache style.min.css separately
     })()
   );
 });
