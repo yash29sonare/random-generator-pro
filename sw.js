@@ -1,4 +1,4 @@
-const CACHE_NAME = 'site-cache-v13-0';
+const CACHE_NAME = 'site-cache-v14-0';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
@@ -38,7 +38,12 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => Promise.all(
-      keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+      keys.map(key => {
+        if (key !== CACHE_NAME) {
+          console.log('[Service Worker] Deleting old cache:', key);
+          return caches.delete(key);
+        }
+      })
     )).then(() => self.clients.claim())
   );
 });
@@ -57,8 +62,19 @@ self.addEventListener('fetch', event => {
           }
           return networkResponse;
         } catch (error) {
-          const cachedResponse = await caches.match(event.request);
-          return cachedResponse || caches.match('/index.html');
+          try {
+            const cachedResponse = await caches.match('/index.html');
+            if (cachedResponse) {
+              return cachedResponse;
+            }
+          } catch (cacheErr) {}
+          return new Response(
+            '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Offline</title></head><body><h1>App is offline. Please refresh.</h1></body></html>',
+            {
+              status: 503,
+              headers: { 'Content-Type': 'text/html' }
+            }
+          );
         }
       })()
     );

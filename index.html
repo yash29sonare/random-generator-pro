@@ -4,22 +4,16 @@
 <head>
     <meta charset="utf-8" />
     <style>
-        /* 1. Hide content by default using a class-based lock */
         html {
             background-color: #000000;
         }
 
-        html:not(.ready) body {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        /* 2. Transition effect for a professional feel */
         body {
-            transition: opacity 0.4s ease-in-out;
+            opacity: 1 !important;
+            display: block !important;
+            visibility: visible !important;
         }
 
-        /* 3. Theme-specific background overrides */
         html.dark {
             background-color: #000000;
         }
@@ -31,37 +25,17 @@
 
     <script>
         (function () {
-            const revealSite = () => {
-                document.documentElement.classList.add('ready');
-            };
-
-            // Force reveal even if storage, CDN scripts, or later startup work fail.
-            setTimeout(revealSite, 1000);
-
             try {
                 const theme = localStorage.getItem('theme') || 'dark';
                 document.documentElement.classList.remove('dark', 'light');
                 document.documentElement.classList.add(theme === 'light' ? 'light' : 'dark');
-            } catch (error) {
+            } catch (e) {
                 document.documentElement.classList.add('dark');
-            }
-
-            if (document.readyState === 'loading') {
-                window.addEventListener('DOMContentLoaded', revealSite);
-            } else {
-                revealSite();
             }
         })();
     </script>
 
-    <noscript>
-        <style>
-            html body {
-                opacity: 1 !important;
-                visibility: visible !important;
-            }
-        </style>
-    </noscript>
+    <noscript><p style="color:#fff;text-align:center;padding:2rem;">JavaScript is required to use Random Generator Pro.</p></noscript>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
@@ -166,6 +140,7 @@
     <style>
         * {
             box-sizing: border-box !important;
+            max-width: 100vw;
         }
 
         body,
@@ -1442,6 +1417,14 @@
 
     <!-- Combined Core + Bulk + Overrides JS (Single-Page Integrity Constraint) -->
     <script>
+        // --- Global Error Handler (catch-all, prevents UI crash) ---
+        window.addEventListener('error', function(e) {
+            console.error('[RGP Error]', e.message, e.filename, e.lineno);
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('[RGP Unhandled Promise]', e.reason);
+        });
+
         // --- Utility: Crypto Random Range ---
         function cryptoRandomInt(min, max) {
             const range = max - min + 1;
@@ -2127,15 +2110,17 @@
             });
         });
 
-        // --- Initial Seed Runs ---
-        btnNumGen.click();
-        btnPassGen.click();
-        updateBulkVisibility();
+        // --- Initial Seed Runs (null-safe) ---
+        if (btnNumGen) btnNumGen.click();
+        if (btnPassGen) btnPassGen.click();
+        if (typeof updateBulkVisibility === 'function') updateBulkVisibility();
 
-        // --- Service Worker Registrar ---
+        // --- Service Worker Registrar (null-safe) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(() => { });
+                navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(err => {
+                    console.warn('[SW] Registration failed:', err);
+                });
             });
         }
     </script>
