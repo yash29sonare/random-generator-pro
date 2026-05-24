@@ -1,4 +1,4 @@
-const CACHE_NAME = 'site-cache-v12-1';
+const CACHE_NAME = 'site-cache-v12-2';
 const GOOGLE_FONTS = [
   'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
@@ -43,6 +43,12 @@ self.addEventListener('install', event => {
       } catch (e) {
         await cache.add('./engine.js');
       }
+
+      // Cache bulk generation engine
+      try {
+        const bulkRes = await fetch('./bulk.js');
+        if (bulkRes.ok) await cache.put('./bulk.js', bulkRes);
+      } catch (e) { /* non-critical */ }
 
       // Critical CSS is now inlined, no need to cache style.min.css separately
     })()

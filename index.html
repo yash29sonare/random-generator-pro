@@ -4,50 +4,66 @@
 
 <head>
     <meta charset="utf-8" />
-  <style>
-    /* 1. Hide content by default using a class-based lock */
-    html { background-color: #000000; }
-    
-    /* 2. Transition effect for a professional feel */
-    body { transition: opacity 0.4s ease-in-out; }
-    
-    /* 3. Theme-specific background overrides */
-    html.dark { background-color: #000000; }
-    html.light { background-color: #ffffff; }
-  </style>
+    <style>
+        /* 1. Hide content by default using a class-based lock */
+        html {
+            background-color: #000000;
+        }
 
-  <script>
-    (function() {
-      const revealSite = () => {
-        document.documentElement.classList.add('ready');
-      };
+        /* 2. Transition effect for a professional feel */
+        body {
+            transition: opacity 0.4s ease-in-out;
+        }
 
-      // Force reveal even if storage, CDN scripts, or later startup work fail.
-      setTimeout(revealSite, 1000);
+        /* 3. Theme-specific background overrides */
+        html.dark {
+            background-color: #000000;
+        }
 
-      try {
-        const theme = localStorage.getItem('theme') || 'dark';
-        document.documentElement.classList.remove('dark', 'light');
-        document.documentElement.classList.add(theme === 'light' ? 'light' : 'dark');
-      } catch (error) {
-        document.documentElement.classList.add('dark');
-      }
+        html.light {
+            background-color: #ffffff;
+        }
+    </style>
 
-      if (document.readyState === 'loading') {
-        window.addEventListener('DOMContentLoaded', revealSite);
-      } else {
-        revealSite();
-      }
-    })();
-  </script>
-  
-  <noscript><style>html body { opacity: 1 !important; visibility: visible !important; }</style></noscript>
+    <script>
+        (function () {
+            const revealSite = () => {
+                document.documentElement.classList.add('ready');
+            };
+
+            // Force reveal even if storage, CDN scripts, or later startup work fail.
+            setTimeout(revealSite, 1000);
+
+            try {
+                const theme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.classList.remove('dark', 'light');
+                document.documentElement.classList.add(theme === 'light' ? 'light' : 'dark');
+            } catch (error) {
+                document.documentElement.classList.add('dark');
+            }
+
+            if (document.readyState === 'loading') {
+                window.addEventListener('DOMContentLoaded', revealSite);
+            } else {
+                revealSite();
+            }
+        })();
+    </script>
+
+    <noscript>
+        <style>
+            html body {
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        </style>
+    </noscript>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
     <title>Random Generator | #1 Name, Password & Key Generator Pro</title>
     <meta name="description"
-        content="Professional Random Generator for numbers, names, and keys. Secure Random Name Picker and Password Generator with enterprise-grade entropy.">
+        content="Global secure bulk random generator for passwords, numbers, and test data. Cryptographically secure CSPRNG engine supporting client-side entropy, enterprise-grade identity mocking, and bulk data export to CSV/JSON.">
     <meta name="keywords"
         content="random generator, name generator, password generator, key generator, random name picker">
     <link rel="canonical" href="https://randomgeneratorpro.online/" />
@@ -623,8 +639,40 @@
             <!-- Hero About Section -->
             <p
                 class="text-body-md font-body-md text-on-surface-variant text-center max-w-3xl mx-auto mb-10 leading-relaxed px-4">
-                Welcome to Random Generator Pro, the web's most Secure Random Generator suite. Built for developers, our Cryptographic utility ensures truly unbiased results.
+                Welcome to Random Generator Pro, the web's most Secure Random Generator suite. Built for developers, our
+                Cryptographic utility ensures truly unbiased results.
             </p>
+
+            <!-- Bulk Control Console -->
+            <div class="bento-card p-6 md:p-8 mb-10 w-full flex flex-col justify-center space-y-4">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-label-caps font-label-caps text-white mb-1 uppercase tracking-wider">Bulk
+                            Generation Command Console</h2>
+                        <p class="text-xs text-on-surface-variant">Perform cryptographically secure high-performance
+                            data seeding operations.</p>
+                    </div>
+                    <div class="bg-white text-black text-sm font-black px-4 py-2 uppercase tracking-widest font-label-caps"
+                        id="bulk-qty-badge">
+                        Quantity: 1 (Single)
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label for="bulk-qty-slider" class="sr-only">Generation Quantity</label>
+                    <input class="w-full h-2 bg-surface-container-highest appearance-none cursor-pointer accent-white"
+                        id="bulk-qty-slider" max="5" min="0" step="1" type="range" value="0" />
+                    <div
+                        class="flex justify-between text-[10px] font-label-caps tracking-widest text-on-surface-variant px-1 select-none">
+                        <span>1</span>
+                        <span>50</span>
+                        <span>100</span>
+                        <span>300</span>
+                        <span>500</span>
+                        <span>1000</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-bento-gap w-full mb-16">
                 <!-- Card 1: Number Generator -->
                 <section class="bento-card p-6 md:p-8 flex flex-col justify-between min-h-[400px]" id="numbers">
@@ -635,8 +683,8 @@
                         </div>
                         <span class="material-symbols-outlined text-on-surface-variant">pin</span>
                     </div>
-                    <div class="flex flex-col items-center justify-center flex-grow py-4 overflow-hidden">
-                        <div class="flex items-center justify-center gap-4 w-full px-4">
+                    <div class="flex flex-col flex-grow justify-center py-4 overflow-hidden">
+                        <div class="flex items-center justify-center gap-4 w-full px-4" id="num-single-display">
                             <div class="massive-output text-display-data-mobile md:text-display-data font-display-data text-white leading-none tracking-tighter break-all text-center tracking-widest font-semibold"
                                 id="out-num">58</div>
                             <button
@@ -644,6 +692,25 @@
                                 id="btn-num-copy-new" title="Copy Number" aria-label="Copy Number">
                                 <span class="material-symbols-outlined">content_copy</span>
                             </button>
+                        </div>
+                        <!-- Bulk Container -->
+                        <div id="num-bulk-container" class="hidden w-full flex-grow flex flex-col justify-between">
+                            <div class="virtual-window max-h-[250px] overflow-y-auto w-full bg-black border border-white p-4 font-mono text-sm space-y-2 mb-2"
+                                id="num-virtual-window">
+                                <!-- Bulk items will render here -->
+                            </div>
+                            <div id="num-action-bar"
+                                class="hidden flex flex-wrap gap-2 justify-between items-center w-full mt-2">
+                                <button
+                                    class="flex-1 min-w-[80px] bg-white text-black text-xs font-bold py-2 px-3 uppercase hover:bg-on-surface-variant transition-colors copy-bulk-btn"
+                                    data-target="numbers">Copy All</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors csv-bulk-btn"
+                                    data-target="numbers">CSV</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors json-bulk-btn"
+                                    data-target="numbers">JSON</button>
+                            </div>
                         </div>
                     </div>
                     <div class="space-y-4">
@@ -695,7 +762,7 @@
                         <span class="material-symbols-outlined text-on-surface-variant">password</span>
                     </div>
                     <div class="flex-grow space-y-6">
-                        <div class="relative group">
+                        <div class="relative group" id="pass-single-display">
                             <input
                                 class="w-full bg-black border border-white p-4 text-headline-sm font-headline-sm text-white tracking-widest truncate"
                                 id="out-pass" placeholder="Click Generate" readonly="" type="text" />
@@ -704,6 +771,25 @@
                                 id="btn-pass-copy" aria-label="Copy Password">
                                 <span class="material-symbols-outlined">content_copy</span>
                             </button>
+                        </div>
+                        <!-- Bulk Container -->
+                        <div id="pass-bulk-container" class="hidden w-full flex-grow flex flex-col justify-between">
+                            <div class="virtual-window max-h-[250px] overflow-y-auto w-full bg-black border border-white p-4 font-mono text-sm space-y-2 mb-2"
+                                id="pass-virtual-window">
+                                <!-- Bulk items will render here -->
+                            </div>
+                            <div id="pass-action-bar"
+                                class="hidden flex flex-wrap gap-2 justify-between items-center w-full mt-2">
+                                <button
+                                    class="flex-1 min-w-[80px] bg-white text-black text-xs font-bold py-2 px-3 uppercase hover:bg-on-surface-variant transition-colors copy-bulk-btn"
+                                    data-target="passwords">Copy All</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors csv-bulk-btn"
+                                    data-target="passwords">CSV</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors json-bulk-btn"
+                                    data-target="passwords">JSON</button>
+                            </div>
                         </div>
                         <div class="space-y-4">
                             <div class="flex justify-between items-center">
@@ -761,10 +847,29 @@
                             class="w-full h-32 bg-black border border-white focus:border-white text-white p-4 font-body-md outline-none resize-none"
                             id="name-input"
                             placeholder="Enter names separated by commas...">Alice, Bob, Charlie, Diana, Echo, Fox, Golf, Hotel</textarea>
-                        <div
-                            class="flex flex-col items-center justify-center flex-grow bg-black border border-dashed border-white p-4 overflow-hidden">
+                        <div class="flex flex-col items-center justify-center flex-grow bg-black border border-dashed border-white p-4 overflow-hidden"
+                            id="names-single-display">
                             <div class="text-headline-lg font-headline-lg text-white text-center leading-tight tracking-tighter uppercase break-words w-full"
                                 id="out-name">EMPTY</div>
+                        </div>
+                        <!-- Bulk Container -->
+                        <div id="names-bulk-container" class="hidden w-full flex-grow flex flex-col justify-between">
+                            <div class="virtual-window max-h-[250px] overflow-y-auto w-full bg-black border border-white p-4 font-mono text-sm space-y-2 mb-2"
+                                id="names-virtual-window">
+                                <!-- Bulk items will render here -->
+                            </div>
+                            <div id="names-action-bar"
+                                class="hidden flex flex-wrap gap-2 justify-between items-center w-full mt-2">
+                                <button
+                                    class="flex-1 min-w-[80px] bg-white text-black text-xs font-bold py-2 px-3 uppercase hover:bg-on-surface-variant transition-colors copy-bulk-btn"
+                                    data-target="names">Copy All</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors csv-bulk-btn"
+                                    data-target="names">CSV</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors json-bulk-btn"
+                                    data-target="names">JSON</button>
+                            </div>
                         </div>
                         <button
                             class="w-full bg-white text-black font-label-caps font-bold py-4 hover:bg-on-surface-variant transition-all uppercase tracking-widest"
@@ -869,26 +974,70 @@
                         <button
                             class="w-full bg-white text-black font-label-caps font-bold py-4 hover:bg-on-surface-variant transition-all uppercase tracking-widest"
                             id="btn-id-gen">Generate Profile</button>
+                        <!-- Bulk Container -->
+                        <div id="identities-bulk-container"
+                            class="hidden w-full flex-grow flex flex-col justify-between mt-4">
+                            <div class="virtual-window max-h-[250px] overflow-y-auto w-full bg-black border border-white p-4 font-mono text-sm space-y-2 mb-2"
+                                id="identities-virtual-window">
+                                <!-- Bulk items will render here -->
+                            </div>
+                            <div id="identities-action-bar"
+                                class="hidden flex flex-wrap gap-2 justify-between items-center w-full mt-2">
+                                <button
+                                    class="flex-1 min-w-[80px] bg-white text-black text-xs font-bold py-2 px-3 uppercase hover:bg-on-surface-variant transition-colors copy-bulk-btn"
+                                    data-target="identities">Copy All</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors csv-bulk-btn"
+                                    data-target="identities">CSV</button>
+                                <button
+                                    class="flex-1 min-w-[80px] bg-black border border-white text-white text-xs font-bold py-2 px-3 uppercase hover:bg-white hover:text-black transition-colors json-bulk-btn"
+                                    data-target="identities">JSON</button>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
 
-            <!-- Injected SEO Blocks -->
-            <section class="seo-content-block" style="margin-top: 40px; opacity: 0.7; font-size: 0.9rem;">
-              <h2 class="text-headline-sm font-headline-sm text-white mb-2 uppercase tracking-wide">How Our Secure Password Generator Works</h2>
-              <p class="text-body-md text-on-surface-variant leading-relaxed">Using the <code>Web Crypto API</code>, we generate high-entropy strings. By calling <code>crypto.getRandomValues()</code>, we ensure your keys are cryptographically strong and generated entirely client-side.</p>
-            </section>
-            <section class="seo-content-block" style="margin-top: 40px; opacity: 0.7; font-size: 0.9rem;">
-              <h2 class="text-headline-sm font-headline-sm text-white mb-2 uppercase tracking-wide">True Random Number Generation (TRNG)</h2>
-              <p class="text-body-md text-on-surface-variant leading-relaxed">Our algorithm uses a 32-bit unsigned integer buffer to process raw hardware entropy, providing an unbiased distribution for scientific and security applications.</p>
-            </section>
-            <section class="seo-content-block" style="margin-top: 40px; opacity: 0.7; font-size: 0.9rem;">
-              <h2 class="text-headline-sm font-headline-sm text-white mb-2 uppercase tracking-wide">Unbiased Selection Logic</h2>
-              <p class="text-body-md text-on-surface-variant leading-relaxed">We utilize a Fisher-Yates shuffle powered by hardware-level randomness to ensure every name in your list has an identical mathematical probability of selection.</p>
-            </section>
-            <section class="seo-content-block" style="margin-top: 40px; opacity: 0.7; font-size: 0.9rem;">
-              <h2 class="text-headline-sm font-headline-sm text-white mb-2 uppercase tracking-wide">Secure Data Mocking for QA</h2>
-              <p class="text-body-md text-on-surface-variant leading-relaxed">Generate synthetic regional data for software testing. All attributes are produced using our core cryptographic engine to maintain high variability without using real PII.</p>
+            <!-- Technical SEO & Compliance Dashboard -->
+            <section class="mt-16 border-t border-white/20 pt-12 space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3"><span
+                                class="material-symbols-outlined text-white">analytics</span>
+                            <h3 class="text-headline-sm font-headline-sm uppercase text-white">The Entropy Standard</h3>
+                        </div>
+                        <p class="text-body-md text-on-surface-variant leading-relaxed">Standard randomizers rely on
+                            <code>Math.random()</code>, which is pseudo-random and mathematically predictable. Our
+                            platform enforces true <strong>Client-Side Entropy</strong> via the browser's native
+                            <strong>Cryptographically Secure</strong> CSPRNG. By calling
+                            <code>crypto.getRandomValues()</code>, we harvest hardware-level entropy immune to
+                            prediction attacks.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3"><span
+                                class="material-symbols-outlined text-white">security</span>
+                            <h3 class="text-headline-sm font-headline-sm uppercase text-white">Zero-Knowledge Compliance
+                            </h3>
+                        </div>
+                        <p class="text-body-md text-on-surface-variant leading-relaxed">Designed under a strict
+                            <strong>Zero-Knowledge Architecture</strong>, our suite executes 100% client-side. No
+                            inputs, keys, or seeds ever leave your browser sandbox, ensuring native GDPR, CCPA, and SOC2
+                            compliance. Zero server logs guarantee absolute privacy for production credentials and
+                            sensitive mock databases.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3"><span
+                                class="material-symbols-outlined text-white">download</span>
+                            <h3 class="text-headline-sm font-headline-sm uppercase text-white">Enterprise-Grade Seeding
+                            </h3>
+                        </div>
+                        <p class="text-body-md text-on-surface-variant leading-relaxed">Our <strong>Bulk Data
+                                Export</strong> capabilities allow instant generation of up to 1,000 parallel entries.
+                            From high-entropy credentials to <strong>Enterprise-Grade Identity Mocking</strong>, output
+                            formatted data models directly for instant <strong>CSV/JSON Data Seeding</strong> in
+                            relational or non-relational database architectures.</p>
+                    </div>
+                </div>
             </section>
 
             <!-- FAQ Section inside Center Column -->
@@ -1128,24 +1277,60 @@
             environments or privacy-sensitive jurisdictions.
         </p>
         <div class="max-w-4xl mx-auto mt-12 pt-8 border-t border-outline-variant">
-            <h2 class="text-headline-md font-headline-md text-white mb-4 mt-8">Pseudo-random vs Cryptographic random</h2>
+            <h2 class="text-headline-md font-headline-md text-white mb-4 mt-8">Pseudo-random vs Cryptographic random
+            </h2>
             <p class="text-on-surface-variant mb-6 leading-relaxed text-body-md">
-                At the center of any computational randomization process lies the distinction between deterministic and non-deterministic engines. Standard online utilities typically employ pseudo-random number generators (PRNGs) like the Linear Congruential Generator or xorshift algorithms. These algorithms rely on an initial seed value to produce a sequence of numbers that only appear random under basic statistical tests. However, because the sequence is deterministic, an attacker who obtains a small sample of the outputs can reverse-engineer the internal state and predict all future values. In contrast, Random Generator Pro utilizes cryptographically secure pseudo-random number generators (CSPRNGs) accessed via the browser's native Web Crypto API. By invoking <code>crypto.getRandomValues()</code>, we access entropy gathered directly from your operating system's kernel-level hardware events. This hardware-backed entropy is sourced from thermal noise, disk seek timings, and hardware interrupts, creating high-entropy sequences that are mathematically unpredictable and computationally immune to cryptanalysis.
+                At the center of any computational randomization process lies the distinction between deterministic and
+                non-deterministic engines. Standard online utilities typically employ pseudo-random number generators
+                (PRNGs) like the Linear Congruential Generator or xorshift algorithms. These algorithms rely on an
+                initial seed value to produce a sequence of numbers that only appear random under basic statistical
+                tests. However, because the sequence is deterministic, an attacker who obtains a small sample of the
+                outputs can reverse-engineer the internal state and predict all future values. In contrast, Random
+                Generator Pro utilizes cryptographically secure pseudo-random number generators (CSPRNGs) accessed via
+                the browser's native Web Crypto API. By invoking <code>crypto.getRandomValues()</code>, we access
+                entropy gathered directly from your operating system's kernel-level hardware events. This
+                hardware-backed entropy is sourced from thermal noise, disk seek timings, and hardware interrupts,
+                creating high-entropy sequences that are mathematically unpredictable and computationally immune to
+                cryptanalysis.
             </p>
 
-            <h2 class="text-headline-md font-headline-md text-white mb-4 mt-8">Practical Applications for Developers</h2>
+            <h2 class="text-headline-md font-headline-md text-white mb-4 mt-8">Practical Applications for Developers
+            </h2>
             <p class="text-on-surface-variant mb-6 leading-relaxed text-body-md">
-                For engineers, quality assurance specialists, and database administrators, access to high-fidelity, randomized synthetic data is indispensable. Seeding database schemas, performing load testing, and conducting internationalization (i18n) verification require varied and realistic datasets that do not compromise user privacy or violate data protection regulations. Random Generator Pro serves as a local developer sandbox for generating synthetic regional identity profiles, secure API credentials, and boundary test cases. By outputting structurally valid names, precise ranges of values, and high-entropy API tokens client-side, developers can populate test environments securely. This offline workflow ensures zero dependency on external third-party microservices, eliminating potential network latency and external security vulnerabilities from your software delivery pipeline.
+                For engineers, quality assurance specialists, and database administrators, access to high-fidelity,
+                randomized synthetic data is indispensable. Seeding database schemas, performing load testing, and
+                conducting internationalization (i18n) verification require varied and realistic datasets that do not
+                compromise user privacy or violate data protection regulations. Random Generator Pro serves as a local
+                developer sandbox for generating synthetic regional identity profiles, secure API credentials, and
+                boundary test cases. By outputting structurally valid names, precise ranges of values, and high-entropy
+                API tokens client-side, developers can populate test environments securely. This offline workflow
+                ensures zero dependency on external third-party microservices, eliminating potential network latency and
+                external security vulnerabilities from your software delivery pipeline.
             </p>
 
             <h2 class="text-headline-md font-headline-md text-white mb-4 mt-8">Advanced Password Architecting</h2>
             <p class="text-on-surface-variant mb-6 leading-relaxed text-body-md">
-                A password's security is mathematically defined by its Shannon Entropy, which measures the informational uncertainty of the character sequence. Basic passwords with low character diversity have minimal entropy, making them vulnerable to dictionary and credential-stuffing attacks. To satisfy modern security frameworks, including NIST SP 800-63B and OWASP guidelines, passwords must leverage hardware-backed entropy and uniform character distribution. By utilizing CSPRNG selection, our Password Architect ensures that every character class (uppercase, lowercase, numeric digits, and special symbols) is uniformly sampled without modulo bias. Generating a 16-character credential under this model yields over 104 bits of entropy, establishing a defense threshold that renders modern brute-force attacks computational impossibilities.
+                A password's security is mathematically defined by its Shannon Entropy, which measures the informational
+                uncertainty of the character sequence. Basic passwords with low character diversity have minimal
+                entropy, making them vulnerable to dictionary and credential-stuffing attacks. To satisfy modern
+                security frameworks, including NIST SP 800-63B and OWASP guidelines, passwords must leverage
+                hardware-backed entropy and uniform character distribution. By utilizing CSPRNG selection, our Password
+                Architect ensures that every character class (uppercase, lowercase, numeric digits, and special symbols)
+                is uniformly sampled without modulo bias. Generating a 16-character credential under this model yields
+                over 104 bits of entropy, establishing a defense threshold that renders modern brute-force attacks
+                computational impossibilities.
             </p>
 
             <h2 class="text-headline-md font-headline-md text-white mb-4 mt-8">Next-Gen PWA Reliability</h2>
             <p class="text-on-surface-variant mb-6 leading-relaxed text-body-md">
-                Modern web applications must remain resilient and fully functional in volatile network environments. By implementing a highly optimized Service Worker with a Cache-First asset delivery strategy, Random Generator Pro operates independently of active network connectivity. Upon first visit, critical UI assets, script files, styling sheets, and regional identity datasets are cached securely in the browser's persistent storage. Subsequent requests are intercepted and served instantaneously from the local cache. This approach guarantees zero-latency execution, reduces server payload overhead to zero, and provides an offline-first experience that operates securely in remote or highly restricted network sandboxes.
+                Modern web applications must remain resilient and fully functional in volatile network environments. By
+                implementing a highly optimized Service Worker with a Cache-First asset delivery strategy, Random
+                Generator Pro operates independently of active network connectivity. Upon first visit, critical UI
+                assets, script files, styling sheets, and regional identity datasets are cached securely in the
+                browser's persistent storage. Subsequent requests are intercepted and served instantaneously from the
+                local cache. This approach guarantees zero-latency execution, reduces server payload overhead to zero,
+                and provides an offline-first experience that operates securely in remote or highly restricted network
+                sandboxes.
             </p>
         </div>
     </section>
@@ -1291,7 +1476,8 @@
         <nav aria-label="Site Map" class="mt-2">
             <a href="index.html" class="hover:text-primary transition-colors mx-3" title="Home">Home</a> |
             <a href="about.html" class="hover:text-primary transition-colors mx-3" title="About Us">About</a> |
-            <a href="privacy.html" class="hover:text-primary transition-colors mx-3" title="Privacy Policy">Privacy</a> |
+            <a href="privacy.html" class="hover:text-primary transition-colors mx-3" title="Privacy Policy">Privacy</a>
+            |
             <a href="terms.html" class="hover:text-primary transition-colors mx-3" title="Terms of Service">Terms</a>
         </nav>
         <span class="text-xs text-on-surface-variant mt-2">&copy; 2026 Random Generator Pro — Cryptographic Professional
@@ -1328,12 +1514,16 @@
     </nav>
     <div
         style="background: #111; border-top: 2px solid #fff; padding: 20px; text-align: center; width: 100%; position: relative; z-index: 9999;">
-        <a href="about.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">About</a> |
-        <a href="privacy.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Privacy Policy</a> |
-        <a href="terms.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Terms</a> |
+        <a href="about.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">About</a>
+        |
+        <a href="privacy.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Privacy
+            Policy</a> |
+        <a href="terms.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Terms</a>
+        |
         <a href="ads.txt" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Ads.txt</a>
     </div>
     <script src="/engine.min.js?v=2.0"></script>
+    <script src="/bulk.js?v=1.0"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
