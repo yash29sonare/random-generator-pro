@@ -24,7 +24,7 @@
     </style>
 
     <script>
-        (function () {
+        window.addEventListener('DOMContentLoaded', () => {
             try {
                 const theme = localStorage.getItem('theme') || 'dark';
                 document.documentElement.classList.remove('dark', 'light');
@@ -32,7 +32,7 @@
             } catch (e) {
                 document.documentElement.classList.add('dark');
             }
-        })();
+        });
     </script>
 
     <noscript><p style="color:#fff;text-align:center;padding:2rem;">JavaScript is required to use Random Generator Pro.</p></noscript>
@@ -1417,13 +1417,14 @@
 
     <!-- Combined Core + Bulk + Overrides JS (Single-Page Integrity Constraint) -->
     <script>
-        // --- Global Error Handler (catch-all, prevents UI crash) ---
-        window.addEventListener('error', function(e) {
-            console.error('[RGP Error]', e.message, e.filename, e.lineno);
-        });
-        window.addEventListener('unhandledrejection', function(e) {
-            console.error('[RGP Unhandled Promise]', e.reason);
-        });
+        window.addEventListener('DOMContentLoaded', () => {
+            // --- Global Error Handler (catch-all, prevents UI crash) ---
+            window.addEventListener('error', function(e) {
+                console.error('[RGP Error]', e.message, e.filename, e.lineno);
+            });
+            window.addEventListener('unhandledrejection', function(e) {
+                console.error('[RGP Unhandled Promise]', e.reason);
+            });
 
         // --- Utility: Crypto Random Range ---
         function cryptoRandomInt(min, max) {
@@ -1496,7 +1497,8 @@
         const qtySteps = [1, 50, 100, 300, 500, 1000];
 
         function getQty() {
-            return qtySteps[parseInt(bulkQtySlider.value)] || 1;
+            const index = bulkQtySlider ? parseInt(bulkQtySlider.value, 10) : 0;
+            return qtySteps[index] || 1;
         }
 
         // --- Rolling Session History State (TASK 2) ---
@@ -1524,6 +1526,7 @@
         const btnHistoryBack = document.getElementById('btn-history-back');
 
         function showHistoryList() {
+            if (!bulkConsole || !generatorsGrid || !historyView || !historyList) return;
             bulkConsole.classList.add('hidden');
             generatorsGrid.classList.add('hidden');
             historyView.classList.remove('hidden');
@@ -1555,9 +1558,9 @@
         btnHistory.forEach(btn => btn.addEventListener('click', showHistoryList));
         if (btnHistoryBack) {
             btnHistoryBack.addEventListener('click', () => {
-                historyView.classList.add('hidden');
-                bulkConsole.classList.remove('hidden');
-                generatorsGrid.classList.remove('hidden');
+                historyView?.classList.add('hidden');
+                bulkConsole?.classList.remove('hidden');
+                generatorsGrid?.classList.remove('hidden');
             });
         }
 
@@ -1574,7 +1577,9 @@
         // --- Bulk Routing Visibility ---
         function updateBulkVisibility() {
             const qty = getQty();
-            bulkQtyBadge.textContent = `Quantity: ${qty} ${qty === 1 ? '(Single)' : '(Bulk)'}`;
+            if (bulkQtyBadge) {
+                bulkQtyBadge.textContent = `Quantity: ${qty} ${qty === 1 ? '(Single)' : '(Bulk)'}`;
+            }
 
             const modules = ['num', 'pass', 'names', 'identities'];
             modules.forEach(m => {
@@ -1589,7 +1594,9 @@
                 }
             });
         }
-        bulkQtySlider.addEventListener('input', updateBulkVisibility);
+        if (bulkQtySlider) {
+            bulkQtySlider.addEventListener('input', updateBulkVisibility);
+        }
 
         // --- Virtual Preview Renderer ---
         function renderVirtualWindow(prefix, data, isObject) {
@@ -1597,27 +1604,23 @@
             const actionBar = document.getElementById(prefix + '-action-bar');
             if (!vw) return;
 
-            vw.innerHTML = ''; // Clear preview on every click
             const displayCount = Math.min(data.length, 10);
+            const rows = [];
 
             for (let i = 0; i < displayCount; i++) {
-                const div = document.createElement('div');
-                div.className = 'text-white border-b border-white/10 pb-1 font-mono text-xs';
                 if (isObject) {
                     const d = data[i];
-                    div.innerHTML = `<span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span><strong>${d.name}</strong> — ${d.city} • Age: ${d.age} • ID: ${d.id}`;
+                    rows.push(`<div class="text-white border-b border-white/10 pb-1 font-mono text-xs"><span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span><strong>${d.name}</strong> — ${d.city} • Age: ${d.age} • ID: ${d.id}</div>`);
                 } else {
-                    div.innerHTML = `<span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span>${data[i]}`;
+                    rows.push(`<div class="text-white border-b border-white/10 pb-1 font-mono text-xs"><span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span>${data[i]}</div>`);
                 }
-                vw.appendChild(div);
             }
 
             if (data.length > 10) {
-                const footer = document.createElement('div');
-                footer.className = 'text-on-surface-variant text-xs text-center pt-2 sticky bottom-0 bg-black font-semibold';
-                footer.textContent = `+${data.length - 10} more items generated successfully.`;
-                vw.appendChild(footer);
+                rows.push(`<div class="text-on-surface-variant text-xs text-center pt-2 sticky bottom-0 bg-black font-semibold">+${data.length - 10} more items generated successfully.</div>`);
             }
+
+            vw.innerHTML = rows.join('');
 
             if (actionBar) {
                 actionBar.classList.remove('hidden');
@@ -1637,20 +1640,26 @@
 
         numDigits?.addEventListener('input', () => {
             if (numDigits.value) {
-                rangeInputsContainer.style.opacity = '0.3';
-                rangeInputsContainer.style.pointerEvents = 'none';
+                if (rangeInputsContainer) {
+                    rangeInputsContainer.style.opacity = '0.3';
+                    rangeInputsContainer.style.pointerEvents = 'none';
+                }
             } else {
-                rangeInputsContainer.style.opacity = '1';
-                rangeInputsContainer.style.pointerEvents = 'auto';
+                if (rangeInputsContainer) {
+                    rangeInputsContainer.style.opacity = '1';
+                    rangeInputsContainer.style.pointerEvents = 'auto';
+                }
             }
         });
 
         btnDigitsClear?.addEventListener('click', () => {
+            if (!numDigits) return;
             numDigits.value = '';
             numDigits.dispatchEvent(new Event('input'));
         });
 
         btnNumGen?.addEventListener('click', () => {
+            if (!outNum || !numMin || !numMax || !numDigits) return;
             const qty = getQty();
 
             if (qty === 1) {
@@ -1707,7 +1716,9 @@
                     window.currentBatchData.push(res);
                 }
                 renderVirtualWindow('num', window.currentBatchData, false);
-                addHistoryEntry('Numbers', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                if (window.currentBatchData.length > 0) {
+                    addHistoryEntry('Numbers', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                }
             }
         });
 
@@ -1722,10 +1733,11 @@
         const btnPassCopy = document.getElementById('btn-pass-copy');
 
         passLength?.addEventListener('input', () => {
-            passLenVal.textContent = passLength.value;
+            if (passLenVal) passLenVal.textContent = passLength.value;
         });
 
         btnPassGen?.addEventListener('click', () => {
+            if (!outPass || !passLength || !chkUpper || !chkNums || !chkSyms) return;
             const qty = getQty();
 
             if (qty === 1) {
@@ -1763,7 +1775,9 @@
                     window.currentBatchData.push(password);
                 }
                 renderVirtualWindow('pass', window.currentBatchData, false);
-                addHistoryEntry('Passwords', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                if (window.currentBatchData.length > 0) {
+                    addHistoryEntry('Passwords', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                }
             }
         });
 
@@ -1773,6 +1787,7 @@
         const outName = document.getElementById('out-name');
 
         btnNamePick?.addEventListener('click', () => {
+            if (!nameInput || !outName) return;
             const qty = getQty();
             const names = nameInput.value.split(',').map(n => n.trim()).filter(n => n !== "");
 
@@ -1804,7 +1819,9 @@
                     window.currentBatchData.push(pick);
                 }
                 renderVirtualWindow('names', window.currentBatchData, false);
-                addHistoryEntry('Names', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                if (window.currentBatchData.length > 0) {
+                    addHistoryEntry('Names', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                }
             }
         });
 
@@ -1872,6 +1889,7 @@
         }
 
         btnIdGen?.addEventListener('click', async () => {
+            if (!regionSelect || !outIdList) return;
             const region = regionSelect.value;
             if (!region || !identityData[region]) return;
 
@@ -1980,7 +1998,9 @@
                     });
                 }
                 renderVirtualWindow('identities', window.currentBatchData, true);
-                addHistoryEntry('Profiles', `${window.currentBatchData[0].name} (+${qty - 1} more)`);
+                if (window.currentBatchData.length > 0) {
+                    addHistoryEntry('Profiles', `${window.currentBatchData[0].name} (+${qty - 1} more)`);
+                }
             }
         });
 
@@ -1989,9 +2009,10 @@
             const btn = e.target.closest('.copy-profile-btn');
             if (!btn) return;
             const profileDiv = btn.closest('.flex');
-            const name = profileDiv.querySelector('.text-white.font-bold').textContent;
-            const details = profileDiv.querySelector('.text-on-surface-variant.text-sm').textContent;
-            const id = profileDiv.querySelector('.text-\\[12px\\].text-white.font-mono').textContent;
+            const name = profileDiv?.querySelector('.text-white.font-bold')?.textContent;
+            const details = profileDiv?.querySelector('.text-on-surface-variant.text-sm')?.textContent;
+            const id = profileDiv?.querySelector('.text-\\[12px\\].text-white.font-mono')?.textContent;
+            if (!name || !details || !id) return;
 
             const textToCopy = `${name}\n${details}\n${id}`;
             if (!textToCopy) return;
@@ -2012,6 +2033,7 @@
 
         // Copy buttons for Single Output
         btnPassCopy?.addEventListener('click', () => {
+            if (!outPass) return;
             const textToCopy = outPass.value;
             if (!textToCopy) return;
             navigator.clipboard.writeText(textToCopy).then(() => {
@@ -2024,10 +2046,12 @@
 
         const btnNumCopyNew = document.getElementById('btn-num-copy-new');
         btnNumCopyNew?.addEventListener('click', () => {
+            if (!outNum) return;
             const textToCopy = outNum.textContent;
             if (!textToCopy || ['ERR', 'MIN > MAX', 'RANGE 1-20'].includes(textToCopy)) return;
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const icon = btnNumCopyNew.querySelector('.material-symbols-outlined');
+                if (!icon) return;
                 const originalText = icon.textContent;
                 icon.textContent = 'check';
                 showToast("Number Copied!");
@@ -2118,11 +2142,12 @@
         // --- Service Worker Registrar (null-safe) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(err => {
+                navigator.serviceWorker.register('./sw.js').catch(err => {
                     console.warn('[SW] Registration failed:', err);
                 });
             });
         }
+        });
     </script>
 </body>
 

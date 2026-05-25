@@ -1,78 +1,77 @@
-const CACHE_NAME = 'site-cache-v14-0';
-const GOOGLE_FONTS = [
-  'https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Narrow:wght@400;600;700&family=Geist:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
-  'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
-];
+const CACHE_NAME = 'rg-pro-v20';
 
 const PRECACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/about.html',
-  '/privacy.html',
-  '/terms.html',
-  '/manifest.json',
-  '/favicon.svg',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-  '/404.html',
-  '/tools/number-generator.html',
-  '/tools/name-picker.html',
-  '/data/names-US.json',
-  '/data/names-UK.json',
-  '/data/names-AS.json',
-  '/data/names-JP.json',
-  ...GOOGLE_FONTS
+  './index.html',
+  './about.html',
+  './privacy.html',
+  './terms.html',
+  './manifest.json',
+  './favicon.svg',
+  './icon-192x192.png',
+  './icon-512x512.png',
+  './404.html',
+  './tools/number-generator.html',
+  './tools/name-picker.html',
+  './data/names-US.json',
+  './data/names-UK.json',
+  './data/names-AS.json',
+  './data/names-JP.json'
 ];
-const ASSETS_TO_CACHE = PRECACHE_ASSETS;
 
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      await cache.addAll(ASSETS_TO_CACHE);
-    })()
+    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE_ASSETS))
   );
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => {
-        if (key !== CACHE_NAME) {
-          console.log('[Service Worker] Deleting old cache:', key);
-          return caches.delete(key);
-        }
-      })
-    )).then(() => self.clients.claim())
+    caches.keys()
+      .then(keys => Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      ))
+      .then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', event => {
-  if (event.request.url.includes('googleads') || event.request.url.includes('adsense') || event.request.url.includes('doubleclick')) return;
+  if (!(event.request.url.indexOf('http') === 0)) return;
+
+  if (
+    event.request.url.includes('googleads') ||
+    event.request.url.includes('adsense') ||
+    event.request.url.includes('doubleclick')
+  ) {
+    return;
+  }
 
   if (event.request.mode === 'navigate') {
     event.respondWith(
       (async () => {
         try {
           const networkResponse = await fetch(event.request);
-          if (networkResponse.ok) {
+          if (networkResponse && networkResponse.ok) {
             const cache = await caches.open(CACHE_NAME);
-            cache.put(event.request, networkResponse.clone());
+            await cache.put(event.request, networkResponse.clone());
           }
           return networkResponse;
         } catch (error) {
-          try {
-            const cachedResponse = await caches.match('/index.html');
-            if (cachedResponse) {
-              return cachedResponse;
-            }
-          } catch (cacheErr) {}
+          const cachedResponse =
+            await caches.match(event.request, { ignoreSearch: true }) ||
+            await caches.match('./index.html', { ignoreSearch: true }) ||
+            await caches.match('/index.html', { ignoreSearch: true });
+
+          if (cachedResponse) return cachedResponse;
+
           return new Response(
-            '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Offline</title></head><body><h1>App is offline. Please refresh.</h1></body></html>',
+            '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Offline</title></head><body><h1>Random Generator Pro is offline</h1><p>Please reconnect and reload.</p></body></html>',
             {
               status: 503,
-              headers: { 'Content-Type': 'text/html' }
+              statusText: 'Service Unavailable',
+              headers: { 'Content-Type': 'text/html; charset=UTF-8' }
             }
           );
         }
@@ -81,43 +80,48 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (event.request.url.includes('names')) {
+  if (event.request.url.includes('/data/names-')) {
     event.respondWith(
-      caches.match(event.request).then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(event.request).then(networkResponse => {
-          if (networkResponse.ok) {
-            const responseClone = networkResponse.clone();
-            caches.open('data-cache').then(cache => {
-              cache.put(event.request, responseClone);
-            });
+      (async () => {
+        const cachedResponse = await caches.match(event.request, { ignoreSearch: true });
+        if (cachedResponse) return cachedResponse;
+
+        try {
+          const networkResponse = await fetch(event.request);
+          if (networkResponse && networkResponse.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(event.request, networkResponse.clone());
           }
           return networkResponse;
-        });
-      })
+        } catch (error) {
+          return new Response('[]', {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+          });
+        }
+      })()
     );
     return;
   }
-  
+
   event.respondWith(
     (async () => {
-      const cachedResponse = await caches.match(event.request);
+      const cachedResponse = await caches.match(event.request, { ignoreSearch: true });
       if (cachedResponse) return cachedResponse;
 
       try {
         const networkResponse = await fetch(event.request);
-        // Cache Google fonts dynamically
-        if (event.request.url.startsWith('https://fonts.gstatic.com')) {
+        if (networkResponse && networkResponse.ok && event.request.method === 'GET') {
           const cache = await caches.open(CACHE_NAME);
-          cache.put(event.request, networkResponse.clone());
+          await cache.put(event.request, networkResponse.clone());
         }
         return networkResponse;
       } catch (error) {
-        return new Response('Network error happened', {
+        return new Response('Network error', {
           status: 408,
-          headers: { 'Content-Type': 'text/plain' },
+          statusText: 'Request Timeout',
+          headers: { 'Content-Type': 'text/plain; charset=UTF-8' }
         });
       }
     })()
