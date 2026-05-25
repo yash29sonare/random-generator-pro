@@ -1,7 +1,8 @@
-const CACHE_NAME = 'rg-pro-v21';
+const CACHE_NAME = 'rg-pro-v22';
 
 const PRECACHE_ASSETS = [
   './index.html',
+  './rgp-app.js',
   './about.html',
   './privacy.html',
   './terms.html',
