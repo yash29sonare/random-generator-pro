@@ -53,6 +53,9 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap"
+        rel="stylesheet" />
+    <link
         href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Archivo+Narrow:wght@400;600;700&amp;family=Geist:wght@400;700&amp;family=Hanken+Grotesk:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="preload" as="style" />
     <link
@@ -160,6 +163,12 @@
             vertical-align: middle
         }
 
+        button,
+        [role="button"] {
+            visibility: visible !important;
+            opacity: 1 !important
+        }
+
         html {
             scrollbar-width: thin;
             scrollbar-color: #ffffff #000000
@@ -194,7 +203,10 @@
         }
 
         .massive-output {
-            text-shadow: 0 0 40px rgba(255, 255, 255, .1)
+            text-shadow: 0 0 40px rgba(255, 255, 255, .1);
+            word-break: break-all;
+            overflow-wrap: anywhere;
+            white-space: normal
         }
 
         input[type=range]::-webkit-slider-thumb {
@@ -471,6 +483,8 @@
         #out-pass,
         #out-name,
         .massive-output,
+        #num-virtual-window,
+        #pass-virtual-window,
         .virtual-window,
         .virtual-window * {
             word-break: break-all !important;
@@ -1418,6 +1432,14 @@
     <!-- Combined Core + Bulk + Overrides JS (Single-Page Integrity Constraint) -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
+            window.currentBatchData = [];
+            const labelMap = {
+                'numbers': 'Numbers',
+                'passwords': 'Passwords',
+                'names': 'Names',
+                'identities': 'Identities'
+            };
+
             // --- Global Error Handler (catch-all, prevents UI crash) ---
             window.addEventListener('error', function(e) {
                 console.error('[RGP Error]', e.message, e.filename, e.lineno);
@@ -1427,19 +1449,31 @@
             });
 
         // --- Utility: Crypto Random Range ---
-        function cryptoRandomInt(min, max) {
-            const range = max - min + 1;
-            const bytesNeeded = Math.ceil(Math.log2(range) / 8);
-            const randomBytes = new Uint8Array(bytesNeeded);
-            window.crypto.getRandomValues(randomBytes);
-            let value = 0;
-            for (let i = 0; i < bytesNeeded; i++) {
-                value = (value << 8) | randomBytes[i];
+        function getCrypto() {
+            const secureCrypto = window.crypto || window.msCrypto;
+            if (!secureCrypto || typeof secureCrypto.getRandomValues !== 'function') {
+                throw new Error('Secure crypto.getRandomValues is unavailable.');
             }
+            return secureCrypto;
+        }
+
+        function cryptoRandomInt(min, max) {
+            if (!Number.isSafeInteger(min) || !Number.isSafeInteger(max) || max < min) {
+                throw new Error('Invalid random integer range.');
+            }
+            const range = max - min + 1;
+            const maxUnbiased = Math.floor(0x100000000 / range) * range;
+            const randomValues = new Uint32Array(1);
+            let value;
+            do {
+                getCrypto().getRandomValues(randomValues);
+                value = randomValues[0];
+            } while (value >= maxUnbiased);
             return min + (value % range);
         }
 
         function cryptoRandomBigInt(min, max) {
+            if (max < min) throw new Error('Invalid random BigInt range.');
             const range = max - min + 1n;
             const bitLength = range.toString(2).length;
             const byteLength = Math.ceil(bitLength / 8);
@@ -1447,7 +1481,7 @@
 
             let randomValue;
             do {
-                window.crypto.getRandomValues(bytes);
+                getCrypto().getRandomValues(bytes);
                 randomValue = 0n;
                 for (let i = 0; i < byteLength; i++) {
                     randomValue = (randomValue << 8n) + BigInt(bytes[i]);
@@ -1457,6 +1491,17 @@
             } while (randomValue >= range);
 
             return min + randomValue;
+        }
+
+        function generateSecurePassword(length, charset) {
+            if (!Number.isSafeInteger(length) || length < 1 || charset.length === 0) {
+                throw new Error('Invalid password options.');
+            }
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += charset.charAt(cryptoRandomInt(0, charset.length - 1));
+            }
+            return password;
         }
 
         // --- Security CSP: Activate Preloaded Styles ---
@@ -1488,6 +1533,33 @@
             toast.textContent = message;
             toast.style.opacity = '1';
             setTimeout(() => { toast.style.opacity = '0'; }, 3000);
+        }
+
+        function copyTextToClipboard(text, successMessage, onSuccess) {
+            if (!text || !navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+                showToast("Clipboard unavailable");
+                return Promise.resolve(false);
+            }
+
+            return navigator.clipboard.writeText(text).then(() => {
+                if (typeof onSuccess === 'function') onSuccess();
+                if (successMessage) showToast(successMessage);
+                return true;
+            }).catch(error => {
+                console.warn('[RGP Clipboard]', error);
+                showToast("Clipboard permission denied");
+                return false;
+            });
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
         }
 
         // --- Global State ---
@@ -1576,23 +1648,27 @@
 
         // --- Bulk Routing Visibility ---
         function updateBulkVisibility() {
-            const qty = getQty();
-            if (bulkQtyBadge) {
-                bulkQtyBadge.textContent = `Quantity: ${qty} ${qty === 1 ? '(Single)' : '(Bulk)'}`;
-            }
-
-            const modules = ['num', 'pass', 'names', 'identities'];
-            modules.forEach(m => {
-                const single = document.getElementById(`${m}-single-display`);
-                const bulk = document.getElementById(`${m}-bulk-container`);
-                if (qty === 1) {
-                    single?.classList.remove('hidden');
-                    bulk?.classList.add('hidden');
-                } else {
-                    single?.classList.add('hidden');
-                    bulk?.classList.remove('hidden');
+            try {
+                const qty = getQty();
+                if (bulkQtyBadge) {
+                    bulkQtyBadge.textContent = `Quantity: ${qty} ${qty === 1 ? '(Single)' : '(Bulk)'}`;
                 }
-            });
+
+                const modules = ['num', 'pass', 'names', 'identities'];
+                modules.forEach(m => {
+                    const single = document.getElementById(`${m}-single-display`);
+                    const bulk = document.getElementById(`${m}-bulk-container`);
+                    if (qty === 1) {
+                        single?.classList.remove('hidden');
+                        bulk?.classList.add('hidden');
+                    } else {
+                        single?.classList.add('hidden');
+                        bulk?.classList.remove('hidden');
+                    }
+                });
+            } catch (error) {
+                console.error('[RGP updateBulkVisibility]', error);
+            }
         }
         if (bulkQtySlider) {
             bulkQtySlider.addEventListener('input', updateBulkVisibility);
@@ -1600,30 +1676,34 @@
 
         // --- Virtual Preview Renderer ---
         function renderVirtualWindow(prefix, data, isObject) {
-            const vw = document.getElementById(prefix + '-virtual-window');
-            const actionBar = document.getElementById(prefix + '-action-bar');
-            if (!vw) return;
+            try {
+                const vw = document.getElementById(prefix + '-virtual-window');
+                const actionBar = document.getElementById(prefix + '-action-bar');
+                if (!vw) return;
 
-            const displayCount = Math.min(data.length, 10);
-            const rows = [];
+                const displayCount = Math.min(data.length, 10);
+                const rows = [];
 
-            for (let i = 0; i < displayCount; i++) {
-                if (isObject) {
-                    const d = data[i];
-                    rows.push(`<div class="text-white border-b border-white/10 pb-1 font-mono text-xs"><span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span><strong>${d.name}</strong> — ${d.city} • Age: ${d.age} • ID: ${d.id}</div>`);
-                } else {
-                    rows.push(`<div class="text-white border-b border-white/10 pb-1 font-mono text-xs"><span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span>${data[i]}</div>`);
+                for (let i = 0; i < displayCount; i++) {
+                    if (isObject) {
+                        const d = data[i];
+                        rows.push(`<div class="text-white border-b border-white/10 pb-1 font-mono text-xs"><span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span><strong>${escapeHtml(d.name)}</strong> — ${escapeHtml(d.city)} • Age: ${escapeHtml(d.age)} • ID: ${escapeHtml(d.id)}</div>`);
+                    } else {
+                        rows.push(`<div class="text-white border-b border-white/10 pb-1 font-mono text-xs"><span class="text-on-surface-variant text-[10px] mr-2">${i + 1}.</span>${escapeHtml(data[i])}</div>`);
+                    }
                 }
-            }
 
-            if (data.length > 10) {
-                rows.push(`<div class="text-on-surface-variant text-xs text-center pt-2 sticky bottom-0 bg-black font-semibold">+${data.length - 10} more items generated successfully.</div>`);
-            }
+                if (data.length > 10) {
+                    rows.push(`<div class="text-on-surface-variant text-xs text-center pt-2 sticky bottom-0 bg-black font-semibold">+${data.length - 10} more items generated successfully.</div>`);
+                }
 
-            vw.innerHTML = rows.join('');
+                vw.innerHTML = rows.join('');
 
-            if (actionBar) {
-                actionBar.classList.remove('hidden');
+                if (actionBar) {
+                    actionBar.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('[RGP renderVirtualWindow]', error);
             }
         }
 
@@ -1659,65 +1739,55 @@
         });
 
         btnNumGen?.addEventListener('click', () => {
-            if (!outNum || !numMin || !numMax || !numDigits) return;
-            const qty = getQty();
-
-            if (qty === 1) {
-                // Single Generation
-                const digitCountStr = numDigits.value.trim();
-                let res = "";
-                if (digitCountStr !== "") {
-                    const count = parseInt(digitCountStr);
-                    if (isNaN(count) || count < 1 || count > 20) {
-                        outNum.textContent = "RANGE 1-20";
-                        return;
+            try {
+                if (!outNum || !numMin || !numMax || !numDigits) return;
+                const qty = getQty();
+                const generateNumberValue = () => {
+                    const digitCountStr = numDigits.value.trim();
+                    if (digitCountStr !== "") {
+                        const count = parseInt(digitCountStr);
+                        if (isNaN(count) || count < 1 || count > 20) {
+                            throw new Error('RANGE 1-20');
+                        }
+                        const min = count === 1 ? 0n : 10n ** BigInt(count - 1);
+                        const max = (10n ** BigInt(count)) - 1n;
+                        return cryptoRandomBigInt(min, max).toString();
                     }
-                    const min = count === 1 ? 0n : 10n ** BigInt(count - 1);
-                    const max = (10n ** BigInt(count)) - 1n;
-                    res = cryptoRandomBigInt(min, max).toString();
-                } else {
+
                     const minVal = numMin.value;
                     const maxVal = numMax.value;
                     if (minVal === "" || maxVal === "") {
-                        outNum.textContent = "ERR";
-                        return;
+                        throw new Error('ERR');
                     }
                     const min = BigInt(minVal);
                     const max = BigInt(maxVal);
                     if (min > max) {
-                        outNum.textContent = "MIN > MAX";
-                        return;
+                        throw new Error('MIN > MAX');
                     }
-                    res = cryptoRandomBigInt(min, max).toString();
-                }
-                outNum.textContent = res;
-                addHistoryEntry('Numbers', res);
-            } else {
-                // Bulk Generation (Global Sync: Read limits inside loop)
-                window.currentBatchData = [];
-                for (let i = 0; i < qty; i++) {
-                    const digitCountStr = numDigits.value.trim();
-                    let res = "";
-                    if (digitCountStr !== "") {
-                        const count = parseInt(digitCountStr);
-                        if (isNaN(count) || count < 1 || count > 20) continue;
-                        const min = count === 1 ? 0n : 10n ** BigInt(count - 1);
-                        const max = (10n ** BigInt(count)) - 1n;
-                        res = cryptoRandomBigInt(min, max).toString();
-                    } else {
-                        const minVal = numMin.value;
-                        const maxVal = numMax.value;
-                        if (minVal === "" || maxVal === "") continue;
-                        const min = BigInt(minVal);
-                        const max = BigInt(maxVal);
-                        if (min > max) continue;
-                        res = cryptoRandomBigInt(min, max).toString();
+                    return cryptoRandomBigInt(min, max).toString();
+                };
+
+                if (qty === 1) {
+                    const res = generateNumberValue();
+                    outNum.textContent = res;
+                    window.currentBatchData = [res];
+                    addHistoryEntry('Numbers', res);
+                } else {
+                    window.currentBatchData = [];
+                    for (let i = 0; i < qty; i++) {
+                        window.currentBatchData.push(generateNumberValue());
                     }
-                    window.currentBatchData.push(res);
+                    renderVirtualWindow('num', window.currentBatchData, false);
+                    if (window.currentBatchData.length > 0) {
+                        addHistoryEntry('Numbers', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                    }
                 }
-                renderVirtualWindow('num', window.currentBatchData, false);
-                if (window.currentBatchData.length > 0) {
-                    addHistoryEntry('Numbers', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                updateBulkVisibility();
+            } catch (error) {
+                console.error('[RGP Number Generator]', error);
+                if (outNum) {
+                    const message = ['RANGE 1-20', 'ERR', 'MIN > MAX'].includes(error.message) ? error.message : 'ERR';
+                    outNum.textContent = message;
                 }
             }
         });
@@ -1737,47 +1807,40 @@
         });
 
         btnPassGen?.addEventListener('click', () => {
-            if (!outPass || !passLength || !chkUpper || !chkNums || !chkSyms) return;
-            const qty = getQty();
-
-            if (qty === 1) {
-                // Single Generation
-                const length = parseInt(passLength.value);
-                let charset = "abcdefghijklmnopqrstuvwxyz";
-                if (chkUpper.checked) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                if (chkNums.checked) charset += "0123456789";
-                if (chkSyms.checked) charset += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
-
-                let password = "";
-                const array = new Uint32Array(length);
-                window.crypto.getRandomValues(array);
-                for (let i = 0; i < length; i++) {
-                    password += charset.charAt(array[i] % charset.length);
-                }
-                outPass.value = password;
-                addHistoryEntry('Passwords', password);
-            } else {
-                // Bulk Generation (Global Sync: Read length and checkboxes inside loop)
-                window.currentBatchData = [];
-                for (let i = 0; i < qty; i++) {
-                    const length = parseInt(passLength.value);
+            try {
+                if (!outPass || !passLength || !chkUpper || !chkNums || !chkSyms) return;
+                const qty = getQty();
+                const generatePasswordValue = () => {
+                    const length = parseInt(passLength.value, 10);
+                    if (!Number.isSafeInteger(length) || length < 1) {
+                        throw new Error('Invalid password length.');
+                    }
                     let charset = "abcdefghijklmnopqrstuvwxyz";
                     if (chkUpper.checked) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
                     if (chkNums.checked) charset += "0123456789";
                     if (chkSyms.checked) charset += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+                    return generateSecurePassword(length, charset);
+                };
 
-                    let password = "";
-                    const array = new Uint32Array(length);
-                    window.crypto.getRandomValues(array);
-                    for (let j = 0; j < length; j++) {
-                        password += charset.charAt(array[j] % charset.length);
+                if (qty === 1) {
+                    const password = generatePasswordValue();
+                    outPass.value = password;
+                    window.currentBatchData = [password];
+                    addHistoryEntry('Passwords', password);
+                } else {
+                    window.currentBatchData = [];
+                    for (let i = 0; i < qty; i++) {
+                        window.currentBatchData.push(generatePasswordValue());
                     }
-                    window.currentBatchData.push(password);
+                    renderVirtualWindow('pass', window.currentBatchData, false);
+                    if (window.currentBatchData.length > 0) {
+                        addHistoryEntry('Passwords', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                    }
                 }
-                renderVirtualWindow('pass', window.currentBatchData, false);
-                if (window.currentBatchData.length > 0) {
-                    addHistoryEntry('Passwords', `${window.currentBatchData[0]} (+${qty - 1} more)`);
-                }
+                updateBulkVisibility();
+            } catch (error) {
+                console.error('[RGP Password Generator]', error);
+                if (outPass) outPass.value = 'ERROR';
             }
         });
 
@@ -1787,41 +1850,52 @@
         const outName = document.getElementById('out-name');
 
         btnNamePick?.addEventListener('click', () => {
-            if (!nameInput || !outName) return;
-            const qty = getQty();
-            const names = nameInput.value.split(',').map(n => n.trim()).filter(n => n !== "");
+            try {
+                if (!nameInput || !outName) return;
+                const qty = getQty();
+                const names = nameInput.value.split(',').map(n => n.trim()).filter(n => n !== "");
 
-            if (names.length === 0) {
-                outName.textContent = "EMPTY";
-                return;
-            }
+                if (names.length === 0) {
+                    outName.textContent = "EMPTY";
+                    return;
+                }
 
-            if (qty === 1) {
-                // Animated Selection
-                let count = 0;
-                const interval = setInterval(() => {
-                    outName.textContent = names[cryptoRandomInt(0, names.length - 1)];
-                    count++;
-                    if (count > 10) {
-                        clearInterval(interval);
-                        const finalName = names[cryptoRandomInt(0, names.length - 1)];
-                        outName.textContent = finalName;
-                        addHistoryEntry('Names', finalName);
+                if (qty === 1) {
+                    let count = 0;
+                    const interval = setInterval(() => {
+                        try {
+                            outName.textContent = names[cryptoRandomInt(0, names.length - 1)];
+                            count++;
+                            if (count > 10) {
+                                clearInterval(interval);
+                                const finalName = names[cryptoRandomInt(0, names.length - 1)];
+                                outName.textContent = finalName;
+                                window.currentBatchData = [finalName];
+                                addHistoryEntry('Names', finalName);
+                                updateBulkVisibility();
+                            }
+                        } catch (error) {
+                            clearInterval(interval);
+                            console.error('[RGP Name Picker Animation]', error);
+                        }
+                    }, 50);
+                } else {
+                    window.currentBatchData = [];
+                    for (let i = 0; i < qty; i++) {
+                        const list = nameInput.value.split(',').map(n => n.trim()).filter(n => n !== "");
+                        if (list.length === 0) continue;
+                        const pick = list[cryptoRandomInt(0, list.length - 1)];
+                        window.currentBatchData.push(pick);
                     }
-                }, 50);
-            } else {
-                // Bulk Generation (Global Sync: Read names list inside loop)
-                window.currentBatchData = [];
-                for (let i = 0; i < qty; i++) {
-                    const list = nameInput.value.split(',').map(n => n.trim()).filter(n => n !== "");
-                    if (list.length === 0) continue;
-                    const pick = list[cryptoRandomInt(0, list.length - 1)];
-                    window.currentBatchData.push(pick);
+                    renderVirtualWindow('names', window.currentBatchData, false);
+                    if (window.currentBatchData.length > 0) {
+                        addHistoryEntry('Names', `${window.currentBatchData[0]} (+${qty - 1} more)`);
+                    }
+                    updateBulkVisibility();
                 }
-                renderVirtualWindow('names', window.currentBatchData, false);
-                if (window.currentBatchData.length > 0) {
-                    addHistoryEntry('Names', `${window.currentBatchData[0]} (+${qty - 1} more)`);
-                }
+            } catch (error) {
+                console.error('[RGP Name Picker]', error);
+                if (outName) outName.textContent = 'ERROR';
             }
         });
 
@@ -1849,14 +1923,17 @@
         const CURRENT_NAME_DATA_VERSION = "3.0";
 
         function generateSecureID(len) {
-            const charset = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            let result = "";
-            const array = new Uint32Array(len);
-            window.crypto.getRandomValues(array);
-            for (let i = 0; i < len; i++) {
-                result += charset[array[i] % charset.length];
+            try {
+                const charset = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+                let result = "";
+                for (let i = 0; i < len; i++) {
+                    result += charset[cryptoRandomInt(0, charset.length - 1)];
+                }
+                return result;
+            } catch (error) {
+                console.error('[RGP Secure ID Generator]', error);
+                throw error;
             }
-            return result;
         }
 
         async function fetchNameData(region) {
@@ -1868,9 +1945,13 @@
             const cacheKey = `nameData_${fileRegion}`;
             const versionKey = `nameDataVersion_${fileRegion}`;
 
-            if (localStorage.getItem(versionKey) === CURRENT_NAME_DATA_VERSION) {
-                const cached = localStorage.getItem(cacheKey);
-                if (cached) return JSON.parse(cached);
+            try {
+                if (localStorage.getItem(versionKey) === CURRENT_NAME_DATA_VERSION) {
+                    const cached = localStorage.getItem(cacheKey);
+                    if (cached) return JSON.parse(cached);
+                }
+            } catch (e) {
+                console.warn('[RGP Name Cache]', e);
             }
 
             try {
@@ -1889,94 +1970,39 @@
         }
 
         btnIdGen?.addEventListener('click', async () => {
-            if (!regionSelect || !outIdList) return;
-            const region = regionSelect.value;
-            if (!region || !identityData[region]) return;
-
-            const qty = getQty();
             const originalText = btnIdGen.textContent;
-            btnIdGen.disabled = true;
-            btnIdGen.textContent = "SYNCING...";
+            try {
+                if (!regionSelect || !outIdList) return;
+                const region = regionSelect.value;
+                if (!region || !identityData[region]) return;
 
-            let remoteData = await fetchNameData(region);
+                const qty = getQty();
+                btnIdGen.disabled = true;
+                btnIdGen.textContent = "SYNCING...";
 
-            // Safe fallback to prevent crash in offline/corrupt state
-            if (!remoteData) {
-                remoteData = {
-                    first: ["Aarav", "John", "Jane", "Yuki", "Priya", "David", "Emily", "Ken"],
-                    middle: ["Kumar", "Singh", "Robert", "Alan", "Sato", "Devi", "Marie", "Takashi"],
-                    last: ["Sharma", "Smith", "Jones", "Tanaka", "Patel", "Brown", "Taylor", "Suzuki"]
-                };
-            }
+                let remoteData = await fetchNameData(region);
 
-            btnIdGen.disabled = false;
-            btnIdGen.textContent = originalText;
-
-            const getRand = (arr) => arr && arr.length > 0 ? arr[cryptoRandomInt(0, arr.length - 1)] : "";
-
-            if (qty === 1) {
-                // Single Identity Generation
-                const localData = identityData[region];
-                const fName = getRand(remoteData.first);
-                let mName = "";
-                if (Math.random() < 0.3) mName = getRand(remoteData.middle);
-                const lName = getRand(remoteData.last);
-
-                let components = [];
-                if (localData.format === 'lastFirst' || region === 'JP') {
-                    if (lName) components.push(lName);
-                    if (fName) components.push(fName);
-                } else if (region === 'US' || region === 'UK') {
-                    if (fName) components.push(fName);
-                    if (mName) components.push(mName.charAt(0) + ".");
-                    if (lName) components.push(lName);
-                } else {
-                    if (fName) components.push(fName);
-                    if (mName) components.push(mName);
-                    if (lName) components.push(lName);
-                }
-                const name = components.join(' ');
-                const city = getRand(localData.cities) || "Unknown City";
-                const age = cryptoRandomInt(18, 75);
-                const idNumber = generateSecureID(8);
-
-                const profileHtml = `
-                    <div class="border-b border-white py-3 last:border-0 flex justify-between items-center group">
-                        <div>
-                            <div class="text-white font-bold">${name}</div>
-                            <div class="text-on-surface-variant text-sm">${city} • Age: ${age}</div>
-                            <div class="text-[12px] text-white font-mono uppercase mt-1">ID: ${idNumber}</div>
-                        </div>
-                        <button class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn" title="Copy Profile" aria-label="Copy Profile">
-                            <span class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-white">content_copy</span>
-                        </button>
-                    </div>
-                `;
-
-                if (outIdList.innerHTML.includes('EMPTY')) outIdList.innerHTML = '';
-                outIdList.insertAdjacentHTML('afterbegin', profileHtml);
-
-                while (outIdList.children.length > 10) {
-                    outIdList.removeChild(outIdList.lastElementChild);
+                if (!remoteData) {
+                    remoteData = {
+                        first: ["Aarav", "John", "Jane", "Yuki", "Priya", "David", "Emily", "Ken"],
+                        middle: ["Kumar", "Singh", "Robert", "Alan", "Sato", "Devi", "Marie", "Takashi"],
+                        last: ["Sharma", "Smith", "Jones", "Tanaka", "Patel", "Brown", "Taylor", "Suzuki"]
+                    };
                 }
 
-                addHistoryEntry('Profiles', `${name} (${city})`);
-            } else {
-                // Bulk Identity Generation (Global Sync: Read selectors inside loop)
-                window.currentBatchData = [];
-                for (let i = 0; i < qty; i++) {
-                    const loopRegion = regionSelect.value;
-                    const localData = identityData[loopRegion];
+                const getRand = (arr) => arr && arr.length > 0 ? arr[cryptoRandomInt(0, arr.length - 1)] : "";
+                const buildProfile = (profileRegion) => {
+                    const localData = identityData[profileRegion];
+                    if (!localData) throw new Error('Invalid identity region.');
                     const fName = getRand(remoteData.first);
-                    let mName = "";
-                    if (Math.random() < 0.3) mName = getRand(remoteData.middle);
+                    const mName = cryptoRandomInt(0, 99) < 30 ? getRand(remoteData.middle) : "";
                     const lName = getRand(remoteData.last);
 
                     let components = [];
-                    if (localData.format === 'lastFirst' || loopRegion === 'JP') {
+                    if (localData.format === 'lastFirst' || profileRegion === 'JP') {
                         if (lName) components.push(lName);
                         if (fName) components.push(fName);
-                    } else if (loopRegion === 'US' || loopRegion === 'UK') {
+                    } else if (profileRegion === 'US' || profileRegion === 'UK') {
                         if (fName) components.push(fName);
                         if (mName) components.push(mName.charAt(0) + ".");
                         if (lName) components.push(lName);
@@ -1985,22 +2011,76 @@
                         if (mName) components.push(mName);
                         if (lName) components.push(lName);
                     }
-                    const name = components.join(' ');
-                    const city = getRand(localData.cities) || "Unknown City";
-                    const age = cryptoRandomInt(18, 75);
-                    const idNumber = generateSecureID(8);
 
-                    window.currentBatchData.push({
-                        name: name,
-                        age: age,
-                        city: city,
-                        id: idNumber
-                    });
+                    return {
+                        name: components.join(' '),
+                        age: cryptoRandomInt(18, 75),
+                        city: getRand(localData.cities) || "Unknown City",
+                        id: generateSecureID(8)
+                    };
+                };
+
+                if (qty === 1) {
+                    const profile = buildProfile(region);
+                    const profileHtml = `
+                        <div class="border-b border-white py-3 last:border-0 flex justify-between items-center group">
+                            <div>
+                                <div class="text-white font-bold">${escapeHtml(profile.name)}</div>
+                                <div class="text-on-surface-variant text-sm">${escapeHtml(profile.city)} • Age: ${escapeHtml(profile.age)}</div>
+                                <div class="text-[12px] text-white font-mono uppercase mt-1">ID: ${escapeHtml(profile.id)}</div>
+                            </div>
+                            <button class="w-8 h-8 flex items-center justify-center bg-[#18181b] border border-gray-600 hover:border-gray-400 hover:shadow-[0_0_8px_rgba(255,255,255,0.2)] transition-all flex-shrink-0 copy-profile-btn" title="Copy Profile" aria-label="Copy Profile">
+                                <span class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-white">content_copy</span>
+                            </button>
+                        </div>
+                    `;
+
+                    if (outIdList.innerHTML.includes('EMPTY')) outIdList.innerHTML = '';
+                    outIdList.insertAdjacentHTML('afterbegin', profileHtml);
+
+                    while (outIdList.children.length > 10) {
+                        outIdList.removeChild(outIdList.lastElementChild);
+                    }
+
+                    window.currentBatchData = [profile];
+                    addHistoryEntry('Profiles', `${profile.name} (${profile.city})`);
+                } else {
+                    window.currentBatchData = [];
+                    for (let i = 0; i < qty; i++) {
+                        window.currentBatchData.push(buildProfile(regionSelect.value));
+                    }
+                    renderVirtualWindow('identities', window.currentBatchData, true);
+                    if (window.currentBatchData.length > 0) {
+                        addHistoryEntry('Profiles', `${window.currentBatchData[0].name} (+${qty - 1} more)`);
+                    }
                 }
-                renderVirtualWindow('identities', window.currentBatchData, true);
-                if (window.currentBatchData.length > 0) {
-                    addHistoryEntry('Profiles', `${window.currentBatchData[0].name} (+${qty - 1} more)`);
-                }
+                updateBulkVisibility();
+            } catch (error) {
+                console.error('[RGP Identity Generator]', error);
+            } finally {
+                btnIdGen.disabled = false;
+                btnIdGen.textContent = originalText;
+            }
+        });
+
+        const btnBulkGen = document.getElementById('btn-bulk-gen');
+        btnBulkGen?.addEventListener('click', () => {
+            try {
+                const requestedTarget = btnBulkGen.getAttribute('data-target');
+                const focusedSection = document.activeElement?.closest('section')?.id;
+                const hashTarget = window.location.hash ? window.location.hash.replace('#', '') : '';
+                const target = requestedTarget || focusedSection || hashTarget || 'numbers';
+                const generatorMap = {
+                    numbers: btnNumGen,
+                    passwords: btnPassGen,
+                    names: btnNamePick,
+                    identities: btnIdGen
+                };
+                const generatorButton = generatorMap[target] || btnNumGen;
+                generatorButton?.click();
+                updateBulkVisibility();
+            } catch (error) {
+                console.error('[RGP Bulk Generator]', error);
             }
         });
 
@@ -2016,13 +2096,13 @@
 
             const textToCopy = `${name}\n${details}\n${id}`;
             if (!textToCopy) return;
-            navigator.clipboard.writeText(textToCopy).then(() => {
+            copyTextToClipboard(textToCopy, "Profile Copied!", () => {
                 const icon = btn.querySelector('.material-symbols-outlined');
+                if (!icon) return;
                 const originalText = icon.textContent;
                 icon.textContent = 'check';
                 icon.classList.remove('text-gray-400', 'group-hover:text-white');
                 icon.classList.add('text-white');
-                showToast("Profile Copied!");
                 setTimeout(() => {
                     icon.textContent = originalText;
                     icon.classList.remove('text-white');
@@ -2036,10 +2116,9 @@
             if (!outPass) return;
             const textToCopy = outPass.value;
             if (!textToCopy) return;
-            navigator.clipboard.writeText(textToCopy).then(() => {
+            copyTextToClipboard(textToCopy, "Password Copied!", () => {
                 const originalIcon = btnPassCopy.innerHTML;
                 btnPassCopy.innerHTML = '<span class="material-symbols-outlined text-black">check</span>';
-                showToast("Password Copied!");
                 setTimeout(() => { btnPassCopy.innerHTML = originalIcon; }, 2000);
             });
         });
@@ -2049,24 +2128,16 @@
             if (!outNum) return;
             const textToCopy = outNum.textContent;
             if (!textToCopy || ['ERR', 'MIN > MAX', 'RANGE 1-20'].includes(textToCopy)) return;
-            navigator.clipboard.writeText(textToCopy).then(() => {
+            copyTextToClipboard(textToCopy, "Number Copied!", () => {
                 const icon = btnNumCopyNew.querySelector('.material-symbols-outlined');
                 if (!icon) return;
                 const originalText = icon.textContent;
                 icon.textContent = 'check';
-                showToast("Number Copied!");
                 setTimeout(() => { icon.textContent = originalText; }, 2000);
             });
         });
 
         // --- Bulk Actions & Smart Export Engine (TASK 3) ---
-        const labelMap = {
-            'numbers': 'Numbers',
-            'passwords': 'Passwords',
-            'names': 'Names',
-            'identities': 'Identities'
-        };
-
         function downloadBlob(content, filename, contentType) {
             const blob = new Blob([content], { type: contentType });
             const url = URL.createObjectURL(blob);
@@ -2091,9 +2162,7 @@
                     text = window.currentBatchData.join('\n');
                 }
 
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast("All items copied to clipboard!");
-                });
+                copyTextToClipboard(text, "All items copied to clipboard!");
             });
         });
 
