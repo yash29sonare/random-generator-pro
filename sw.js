@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rg-pro-v20';
+const CACHE_NAME = 'rg-pro-v21';
 
 const PRECACHE_ASSETS = [
   './index.html',

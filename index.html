@@ -1431,7 +1431,9 @@
 
     <!-- Combined Core + Bulk + Overrides JS (Single-Page Integrity Constraint) -->
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
+        function initRandomGeneratorPro() {
+            if (window.__rgpInitialized) return;
+            window.__rgpInitialized = true;
             window.currentBatchData = [];
             const labelMap = {
                 'numbers': 'Numbers',
@@ -2210,13 +2212,25 @@
 
         // --- Service Worker Registrar (null-safe) ---
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
+            const registerServiceWorker = () => {
                 navigator.serviceWorker.register('./sw.js').catch(err => {
                     console.warn('[SW] Registration failed:', err);
                 });
-            });
+            };
+
+            if (document.readyState === 'complete') {
+                registerServiceWorker();
+            } else {
+                window.addEventListener('load', registerServiceWorker, { once: true });
+            }
         }
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', initRandomGeneratorPro, { once: true });
+        } else {
+            initRandomGeneratorPro();
+        }
     </script>
 </body>
 
