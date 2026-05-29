@@ -6,28 +6,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <style>
-    /* Immediate Visual Reset */
-    html, body {
-      background-color: #000000 !important;
-      color: #e2e2e2 !important;
-      margin: 0; padding: 0;
-      opacity: 1 !important;
-      visibility: visible !important;
-      min-height: 100vh;
+    /* Prevent FOIT and Raw HTML layout */
+    html { background-color: #000000 !important; }
+    body { 
+        background-color: #000000 !important; 
+        color: #e2e2e2 !important; 
+        margin: 0; padding: 0; 
+        visibility: visible !important; 
+        opacity: 1 !important;
+        display: block !important;
+        font-family: sans-serif; /* Fallback to prevent layout shift */
     }
-    /* Native CSS Reveal (Bypasses JS Latency) */
     @keyframes autoReveal { from { opacity: 0; } to { opacity: 1; } }
-    body { animation: autoReveal 0.4s ease-in-out forwards !important; }
+    .page-reveal { animation: autoReveal 0.4s ease-in-out forwards !important; }
     /* Prevents button "ghosting" during load */
     button, .bento-card { transition: opacity 0.3s ease; }
     html.dark { background-color: #000000; }
     html.light { background-color: #ffffff; }
   </style>
+
+  <link rel="preload" href="/style.css?v=2.1.1" as="style" />
+  <link rel="stylesheet" type="text/css" href="/style.css?v=2.1.1" />
+
   <script>
-    (function() {
-      const theme = localStorage.getItem('theme') || 'dark';
-      document.documentElement.classList.add(theme);
-    })();
+    (function(){const t=localStorage.getItem('theme')||'dark';document.documentElement.classList.add(t);})();
   </script>
 
   <noscript><style>html body { opacity: 1 !important; visibility: visible !important; }</style></noscript>
@@ -149,7 +151,7 @@
     <link rel="manifest" href="/manifest.json" />
 </head>
 
-<body class="flex flex-col min-h-screen bg-black">
+<body class="page-reveal flex flex-col min-h-screen bg-black">
     <div class="max-w-4xl mx-auto w-full px-4 py-12">
         <!-- Back to Home -->
         <a href="/" class="back-link inline-flex items-center gap-2 mb-8 text-sm uppercase tracking-widest font-label-caps hover:text-primary transition-colors">
