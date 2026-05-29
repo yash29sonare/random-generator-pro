@@ -1,22 +1,22 @@
-const CACHE_NAME = 'rg-pro-v22';
+const CACHE_NAME = 'rg-pro-v23';
 
 const PRECACHE_ASSETS = [
-  './index.html',
-  './rgp-app.js',
-  './about.html',
-  './privacy.html',
-  './terms.html',
-  './manifest.json',
-  './favicon.svg',
-  './icon-192x192.png',
-  './icon-512x512.png',
-  './404.html',
-  './tools/number-generator.html',
-  './tools/name-picker.html',
-  './data/names-US.json',
-  './data/names-UK.json',
-  './data/names-AS.json',
-  './data/names-JP.json'
+  '/',
+  '/rgp-app.js',
+  '/about.html',
+  '/privacy.html',
+  '/terms.html',
+  '/manifest.json',
+  '/favicon.svg',
+  '/icon-192x192.png',
+  '/icon-512x512.png',
+  '/404.html',
+  '/tools/number-generator.html',
+  '/tools/name-picker.html',
+  '/data/names-US.json',
+  '/data/names-UK.json',
+  '/data/names-AS.json',
+  '/data/names-JP.json'
 ];
 
 self.addEventListener('install', event => {
@@ -62,8 +62,7 @@ self.addEventListener('fetch', event => {
         } catch (error) {
           const cachedResponse =
             await caches.match(event.request, { ignoreSearch: true }) ||
-            await caches.match('./index.html', { ignoreSearch: true }) ||
-            await caches.match('/index.html', { ignoreSearch: true });
+            await caches.match('/', { ignoreSearch: true });
 
           if (cachedResponse) return cachedResponse;
 

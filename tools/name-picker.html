@@ -4,23 +4,39 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <style>
-    html { background-color: #000000; }
-    body { transition: opacity 0.4s ease-in-out; }
+    html { background-color: #000000; height: 100%; }
+    body { 
+      opacity: 0; 
+      background-color: #000000; 
+      transition: opacity 0.5s ease-in-out; 
+      visibility: visible !important; 
+      position: relative;
+      min-height: 100vh;
+    }
+    /* Prevents button "ghosting" during load */
+    button, .bento-card { transition: opacity 0.3s ease; }
     html.dark { background-color: #000000; }
     html.light { background-color: #ffffff; }
   </style>
   <script>
     (function() {
+      // 1. Immediate Theme Apply (Prevents Light Flash)
       const theme = localStorage.getItem('theme') || 'dark';
       document.documentElement.classList.add(theme);
-      const revealSite = () => { document.documentElement.classList.add('ready'); };
-      if (document.readyState === 'loading') { window.addEventListener('DOMContentLoaded', revealSite); } else { revealSite(); }
-      setTimeout(revealSite, 1000);
+
+      // 2. Controlled Reveal
+      window.addEventListener('load', () => {
+        requestAnimationFrame(() => {
+          document.body.style.opacity = '1';
+        });
+      });
+      // 3. Safety Fallback (1.2s)
+      setTimeout(() => { document.body.style.opacity = '1'; }, 1200);
     })();
   </script>
   <noscript><style>html body { opacity: 1 !important; visibility: visible !important; }</style></noscript>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
     <title>Random Name Picker | Cryptographically Secure &amp; Unbiased Pro Selection</title>
     <meta
@@ -187,8 +203,8 @@
     <meta name="twitter:image" content="https://randomgeneratorpro.online/og-image.png" />
     <meta name="color-scheme" content="dark" />
 
-    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
-    <link rel="manifest" href="../manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
     <style>
         .bento-card:not(#names) {
             display: none !important;
@@ -200,7 +216,7 @@
     <!-- TopAppBar (Mobile Only) -->
     <header
         class="xl:hidden flex justify-between items-center w-full px-margin-mobile py-4 bg-black border-b border-white sticky top-0 z-50">
-        <a href="../index.html" aria-label="Go to Home">
+        <a href="/" aria-label="Go to Home">
             <div class="text-headline-md font-headline-md font-bold text-white tracking-tighter hover:text-primary transition-colors">Random Generator Pro</div>
         </a>
         <div class="flex gap-2">
@@ -226,7 +242,7 @@
         <main class="center-main flex flex-col w-full shrink-0">
             <div id='ad-slot-reserve' style='min-height: 100px; width: 100%; max-width: 100%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); margin: 0 auto 25px auto; border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1); font-size: 11px; color: #777; overflow: hidden;'>Advertisement Placeholder</div>
             <!-- Logo Desktop -->
-            <a href="../index.html" aria-label="Go to Home">
+            <a href="/" aria-label="Go to Home">
                 <h1 class="hidden xl:block text-headline-lg font-headline-lg text-white text-center font-bold tracking-widest uppercase mb-8 hover:text-primary transition-colors">
                     Random Generator Pro
                 </h1>
@@ -580,6 +596,44 @@
         </aside>
     </div>
 
+    <section class="max-w-4xl mx-auto px-4 py-12 text-white">
+        <h2 class="text-3xl font-bold mb-6 text-center text-primary">Why Use This Random Name Picker?</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-zinc-900 p-6 rounded-lg border border-zinc-800">
+                <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                    <span class="text-primary font-bold">1.</span> True Cryptographic Fairness
+                </h3>
+                <p class="text-zinc-400 leading-relaxed text-sm">
+                    Most web-based name pickers rely on pseudorandom number generators (like <code>Math.random()</code>) which can exhibit statistical patterns over time. Our tool leverages the Web Crypto API's cryptographically secure <code>crypto.getRandomValues()</code>, ensuring each name has an mathematically equal chance of selection.
+                </p>
+            </div>
+            <div class="bg-zinc-900 p-6 rounded-lg border border-zinc-800">
+                <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                    <span class="text-primary font-bold">2.</span> Absolute Privacy Guarantee
+                </h3>
+                <p class="text-zinc-400 leading-relaxed text-sm">
+                    Your lists are sacred. Every single operation occurs strictly in your browser's local memory sandbox. We never send your participant lists, raffle entries, or selected names to any server, database, or external tracker.
+                </p>
+            </div>
+            <div class="bg-zinc-900 p-6 rounded-lg border border-zinc-800">
+                <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                    <span class="text-primary font-bold">3.</span> PWA & Offline Readiness
+                </h3>
+                <p class="text-zinc-400 leading-relaxed text-sm">
+                    Need to pick names at a remote event or classroom with poor internet? Once installed as a Progressive Web App (PWA), this picker functions fully offline with zero latency, retrieving cached templates immediately.
+                </p>
+            </div>
+            <div class="bg-zinc-900 p-6 rounded-lg border border-zinc-800">
+                <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                    <span class="text-primary font-bold">4.</span> Bulk Upload & Parsing
+                </h3>
+                <p class="text-zinc-400 leading-relaxed text-sm">
+                    Input thousands of names via comma separation. The responsive CSS grid and highly optimized JavaScript array parsing handle heavy workloads with no interface freeze or scroll stuttering.
+                </p>
+            </div>
+        </div>
+    </section>
+
     <!-- Expert Content: Anti-Thin-Content SEO Section -->
     <section id="pro-app-info">
         <h2 class="text-headline-md font-headline-md text-white mb-4">Enterprise-Grade Randomization</h2>
@@ -607,41 +661,20 @@
         </p>
     </section>
 
-    <!-- SEO Internal Linking Footer -->
-    <footer
-        class="mt-8 pt-8 border-t border-outline-variant flex flex-col justify-center items-center pb-8 text-on-surface-variant font-label-caps text-sm uppercase tracking-widest gap-4">
-        <nav aria-label="Site Navigation">
-            <a href="../index.html#passwords" class="hover:text-primary transition-colors mx-3"
-                title="High-Entropy Password Generator">Secure Password Architect</a> |
-            <a href="number-generator.html" class="hover:text-primary transition-colors mx-3"
-                title="Cryptographic Random Number Generator">High-Precision Range Generator</a> |
-            <a href="name-picker.html" class="hover:text-primary transition-colors mx-3"
-                title="Cryptographic Name Picker Tool">Unbiased Name Picker</a> |
-            <a href="../index.html#identities" class="hover:text-primary transition-colors mx-3"
-                title="Regional Identity Engine">Regional Identity Engine</a>
-        </nav>
-        <nav aria-label="Site Map" class="mt-2">
-            <a href="../index.html" class="hover:text-primary transition-colors mx-3" title="Home">Home</a> |
-            <a href="../about.html" class="hover:text-primary transition-colors mx-3" title="About Us">About</a> |
-            <a href="../privacy.html" class="hover:text-primary transition-colors mx-3" title="Privacy Policy">Privacy</a> |
-            <a href="../terms.html" class="hover:text-primary transition-colors mx-3" title="Terms of Service">Terms</a>
-        </nav>
-        <span class="text-xs text-on-surface-variant mt-2">&copy; 2026 Random Generator Pro — Cryptographic Professional
-            Utility Suite</span>
-    </footer>
+    
 
     <!-- BottomNavBar (Mobile Only) -->
     <nav
         class="xl:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-black border-t border-white shadow-2xl">
         <a aria-label="Navigate to Numbers"
             class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors"
-            href="number-generator.html">
+            href="/tools/number-generator.html">
             <span class="material-symbols-outlined text-[20px]">pin</span>
             <span class="text-[10px] font-label-caps tracking-wider">Numbers</span>
         </a>
         <a aria-label="Navigate to Passwords"
             class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors"
-            href="../index.html#passwords">
+            href="/#passwords">
             <span class="material-symbols-outlined text-[20px]">password</span>
             <span class="text-[10px] font-label-caps tracking-wider">Passwords</span>
         </a>
@@ -653,17 +686,12 @@
         </a>
         <a aria-label="Navigate to Random Names"
             class="flex flex-col items-center justify-center text-on-surface-variant w-full min-h-[48px] py-1 hover:bg-zinc-900 transition-colors"
-            href="../index.html#identities">
+            href="/#identities">
             <span class="material-symbols-outlined text-[20px]">fingerprint</span>
             <span class="text-[10px] font-label-caps tracking-wider">Random Names</span>
         </a>
     </nav>
-    <div style="background: #111; border-top: 2px solid #fff; padding: 20px; text-align: center; width: 100%; position: relative; z-index: 9999;">
-        <a href="../about.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">About</a> |
-        <a href="../privacy.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Privacy Policy</a> |
-        <a href="../terms.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Terms</a> |
-        <a href="../ads.txt" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Ads.txt</a>
-    </div>
+    
     <script src="/engine.min.js?v=2.0"></script>
     <script>
         if ('serviceWorker' in navigator) {
@@ -685,6 +713,40 @@
             }, 100);
         });
     </script>
+    <footer class="w-full bg-[#000] border-t border-zinc-800 py-12 mt-12 text-zinc-500 text-xs">
+        <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-4 gap-8">
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Security First</h4>
+                <p class="leading-relaxed">
+                    Random Generator Pro is a decentralized, serverless random generation framework. All generation occurs client-side using the Web Crypto API, guaranteeing complete mathematical privacy.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+                    <li><a href="/tools/number-generator.html" class="hover:text-white transition-colors">Random Numbers</a></li>
+                    <li><a href="/tools/name-picker.html" class="hover:text-white transition-colors">Name Picker</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="/privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="/terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Global Standards</h4>
+                <p class="leading-relaxed">
+                    NIST SP 800-63B compliant high-entropy architecture. Zero network data transmission. Full offline Progressive Web App caching support.
+                </p>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-4 mt-8 pt-8 border-t border-zinc-900 text-center">
+            <p>© 2026 Random Generator Pro. Online utility sandbox. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 
 </html>

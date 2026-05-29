@@ -3,16 +3,20 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <style>
-        html {
-            background-color: #000000;
+        html { background-color: #000000; height: 100%; }
+        body { 
+            opacity: 0; 
+            background-color: #000000; 
+            transition: opacity 0.5s ease-in-out; 
+            visibility: visible !important; 
+            position: relative;
+            min-height: 100vh;
         }
-
-        body {
-            opacity: 1 !important;
-            display: block !important;
-            visibility: visible !important;
-        }
+        /* Prevents button "ghosting" during load */
+        button, .bento-card { transition: opacity 0.3s ease; }
 
         html.dark {
             background-color: #000000;
@@ -24,20 +28,25 @@
     </style>
 
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            try {
-                const theme = localStorage.getItem('theme') || 'dark';
-                document.documentElement.classList.remove('dark', 'light');
-                document.documentElement.classList.add(theme === 'light' ? 'light' : 'dark');
-            } catch (e) {
-                document.documentElement.classList.add('dark');
-            }
-        });
+        (function() {
+            // 1. Immediate Theme Apply (Prevents Light Flash)
+            const theme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.classList.add(theme);
+
+            // 2. Controlled Reveal
+            window.addEventListener('load', () => {
+                requestAnimationFrame(() => {
+                    document.body.style.opacity = '1';
+                });
+            });
+            // 3. Safety Fallback (1.2s)
+            setTimeout(() => { document.body.style.opacity = '1'; }, 1200);
+        })();
     </script>
 
-    <noscript><p style="color:#fff;text-align:center;padding:2rem;">JavaScript is required to use Random Generator Pro.</p></noscript>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <noscript>
+        <p style="color:#fff;text-align:center;padding:2rem;">JavaScript is required to use Random Generator Pro.</p>
+    </noscript>
     <meta name="theme-color" content="#000000" />
     <title>Random Generator Pro | Professional Bulk Data Tooling Suite</title>
     <meta name="description"
@@ -161,12 +170,6 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             vertical-align: middle
-        }
-
-        button,
-        [role="button"] {
-            visibility: visible !important;
-            opacity: 1 !important
         }
 
         html {
@@ -557,8 +560,8 @@
             margin-top: 0.9rem !important;
         }
     </style>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -655,8 +658,10 @@
                 Advertisement Placeholder</div>
 
             <!-- Hero About Section -->
-            <p class="text-body-md font-body-md text-on-surface-variant text-center max-w-3xl mx-auto mb-10 leading-relaxed px-4">
-                Welcome to Random Generator Pro, the web's premier Professional Bulk Data Tooling suite. Built for developers, our
+            <p
+                class="text-body-md font-body-md text-on-surface-variant text-center max-w-3xl mx-auto mb-10 leading-relaxed px-4">
+                Welcome to Random Generator Pro, the web's premier Professional Bulk Data Tooling suite. Built for
+                developers, our
                 Cryptographic utility ensures truly unbiased results.
             </p>
 
@@ -946,7 +951,8 @@
                         </div>
                         <div class="flex-grow bg-black border border-white overflow-y-auto max-h-48 p-4 font-body-md"
                             id="out-id-list">
-                            <div class="border-b border-white py-3 last:border-0 flex justify-between items-center group">
+                            <div
+                                class="border-b border-white py-3 last:border-0 flex justify-between items-center group">
                                 <div>
                                     <div class="text-white font-bold">Arjun Patel</div>
                                     <div class="text-on-surface-variant text-sm">Delhi • Age: 39</div>
@@ -989,7 +995,8 @@
 
             <!-- Technical SEO & Compliance Dashboard -->
             <section class="mt-16 border-t border-white/20 pt-12 space-y-8">
-                <h2 class="text-headline-md font-headline-md text-white mb-2 uppercase tracking-wide">Enterprise Data & Security Architecture</h2>
+                <h2 class="text-headline-md font-headline-md text-white mb-2 uppercase tracking-wide">Enterprise Data &
+                    Security Architecture</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="space-y-4">
                         <div class="flex items-center gap-3"><span
@@ -997,7 +1004,12 @@
                             <h3 class="text-headline-sm font-headline-sm uppercase text-white">CSPRNG vs PRNG</h3>
                         </div>
                         <p class="text-body-md text-on-surface-variant leading-relaxed">
-                            Standard randomizers rely on <code>Math.random()</code>, which employs pseudo-random PRNG algorithms that are deterministic and predictable. Our platform enforces cryptographically secure randomness via the Web Crypto API's native <strong>CSPRNG</strong>. By executing <code>crypto.getRandomValues()</code>, we harvest true operating system hardware-level entropy immune to prediction attacks, suitable for API credentials, encryption keys, and statistical simulations.
+                            Standard randomizers rely on <code>Math.random()</code>, which employs pseudo-random PRNG
+                            algorithms that are deterministic and predictable. Our platform enforces cryptographically
+                            secure randomness via the Web Crypto API's native <strong>CSPRNG</strong>. By executing
+                            <code>crypto.getRandomValues()</code>, we harvest true operating system hardware-level
+                            entropy immune to prediction attacks, suitable for API credentials, encryption keys, and
+                            statistical simulations.
                         </p>
                     </div>
                     <div class="space-y-4">
@@ -1006,7 +1018,11 @@
                             <h3 class="text-headline-sm font-headline-sm uppercase text-white">Privacy Architecture</h3>
                         </div>
                         <p class="text-body-md text-on-surface-variant leading-relaxed">
-                            Designed under a strict <strong>Zero-Knowledge client-side architecture</strong>, all randomization runs inside your browser sandbox. No passwords, ranges, custom lists, or profiles are ever sent over network channels, stored on databases, or logged on remote servers. This offline-first approach guarantees complete compatibility with GDPR, CCPA, and SOC2 confidentiality guidelines.
+                            Designed under a strict <strong>Zero-Knowledge client-side architecture</strong>, all
+                            randomization runs inside your browser sandbox. No passwords, ranges, custom lists, or
+                            profiles are ever sent over network channels, stored on databases, or logged on remote
+                            servers. This offline-first approach guarantees complete compatibility with GDPR, CCPA, and
+                            SOC2 confidentiality guidelines.
                         </p>
                     </div>
                     <div class="space-y-4">
@@ -1015,7 +1031,10 @@
                             <h3 class="text-headline-sm font-headline-sm uppercase text-white">Professional Seeding</h3>
                         </div>
                         <p class="text-body-md text-on-surface-variant leading-relaxed">
-                            With our professional bulk generation command console, you can rapidly build mock records up to 1,000 parallel entries. Use our smart CSV/JSON export utility to parse formatted data objects directly into database schemas. Perfect for database seeding, load verification, boundary testing, and local developer environment initialization.
+                            With our professional bulk generation command console, you can rapidly build mock records up
+                            to 1,000 parallel entries. Use our smart CSV/JSON export utility to parse formatted data
+                            objects directly into database schemas. Perfect for database seeding, load verification,
+                            boundary testing, and local developer environment initialization.
                         </p>
                     </div>
                 </div>
@@ -1412,19 +1431,43 @@
         </ul>
     </div>
 
-    <!-- Bottom Footer Links -->
-    <div style="background: #111; border-top: 2px solid #fff; padding: 20px; text-align: center; width: 100%; position: relative; z-index: 9999;">
-        <a href="about.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">About</a>
-        |
-        <a href="privacy.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Privacy
-            Policy</a> |
-        <a href="terms.html" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Terms</a>
-        |
-        <a href="ads.txt" style="color:#fff; margin: 0 10px;" class="hover:text-primary transition-colors">Ads.txt</a>
-    </div>
-
     <!-- Combined Core + Bulk + Overrides JS -->
-    <script defer src="./rgp-app.js?v=22"></script>
+    <script defer src="/rgp-app.js?v=22"></script>
+
+    <footer class="w-full bg-[#000] border-t border-zinc-800 py-12 mt-12 text-zinc-500 text-xs">
+        <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-4 gap-8">
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Security First</h4>
+                <p class="leading-relaxed">
+                    Random Generator Pro is a decentralized, serverless random generation framework. All generation occurs client-side using the Web Crypto API, guaranteeing complete mathematical privacy.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+                    <li><a href="/tools/number-generator.html" class="hover:text-white transition-colors">Random Numbers</a></li>
+                    <li><a href="/tools/name-picker.html" class="hover:text-white transition-colors">Name Picker</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Legal</h4>
+                <ul class="space-y-2">
+                    <li><a href="/privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="/terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Global Standards</h4>
+                <p class="leading-relaxed">
+                    NIST SP 800-63B compliant high-entropy architecture. Zero network data transmission. Full offline Progressive Web App caching support.
+                </p>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-4 mt-8 pt-8 border-t border-zinc-900 text-center">
+            <p>© 2026 Random Generator Pro. Online utility sandbox. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 
 </html>
