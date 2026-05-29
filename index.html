@@ -6,18 +6,38 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <style>
-        @keyframes autoReveal { from { opacity: 0; } to { opacity: 1; } }
-        html { background-color: #000000; height: 100%; }
+        /* Immediate Visual Reset */
+        html,
         body {
-            animation: autoReveal 0.4s ease-in-out forwards !important;
-            visibility: visible !important;
+            background-color: #000000 !important;
+            color: #e2e2e2 !important;
+            margin: 0;
+            padding: 0;
             opacity: 1 !important;
-            background-color: #000000;
-            position: relative;
+            visibility: visible !important;
             min-height: 100vh;
         }
+
+        /* Native CSS Reveal (Bypasses JS Latency) */
+        @keyframes autoReveal {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        body {
+            animation: autoReveal 0.4s ease-in-out forwards !important;
+        }
+
         /* Prevents button "ghosting" during load */
-        button, .bento-card { transition: opacity 0.3s ease; }
+        button,
+        .bento-card {
+            transition: opacity 0.3s ease;
+        }
 
         html.dark {
             background-color: #000000;
@@ -29,7 +49,7 @@
     </style>
 
     <script>
-        (function() {
+        (function () {
             const theme = localStorage.getItem('theme') || 'dark';
             document.documentElement.classList.add(theme);
         })();
@@ -1430,15 +1450,18 @@
             <div>
                 <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Security First</h4>
                 <p class="leading-relaxed">
-                    Random Generator Pro is a decentralized, serverless random generation framework. All generation occurs client-side using the Web Crypto API, guaranteeing complete mathematical privacy.
+                    Random Generator Pro is a decentralized, serverless random generation framework. All generation
+                    occurs client-side using the Web Crypto API, guaranteeing complete mathematical privacy.
                 </p>
             </div>
             <div>
                 <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Quick Links</h4>
                 <ul class="space-y-2">
                     <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
-                    <li><a href="/tools/number-generator.html" class="hover:text-white transition-colors">Random Numbers</a></li>
-                    <li><a href="/tools/name-picker.html" class="hover:text-white transition-colors">Name Picker</a></li>
+                    <li><a href="/tools/number-generator.html" class="hover:text-white transition-colors">Random
+                            Numbers</a></li>
+                    <li><a href="/tools/name-picker.html" class="hover:text-white transition-colors">Name Picker</a>
+                    </li>
                 </ul>
             </div>
             <div>
@@ -1451,7 +1474,8 @@
             <div>
                 <h4 class="text-white font-bold mb-4 font-label-caps uppercase tracking-wider">Global Standards</h4>
                 <p class="leading-relaxed">
-                    NIST SP 800-63B compliant high-entropy architecture. Zero network data transmission. Full offline Progressive Web App caching support.
+                    NIST SP 800-63B compliant high-entropy architecture. Zero network data transmission. Full offline
+                    Progressive Web App caching support.
                 </p>
             </div>
         </div>
